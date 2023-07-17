@@ -40,6 +40,9 @@ Route::delete('/students/{student}', [StudentController::class, 'destroy'])->nam
 Route::get('/main', [MainController::class, 'index'])->name('main');
 Route::get('/StudentList',[\App\Http\Controllers\StudentController::class,'index'])->name('index');
 
+//Lista klas
+Route::get('listaKlas',[\App\Http\Controllers\ClassController::class,'index'])->name('index');
+
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);

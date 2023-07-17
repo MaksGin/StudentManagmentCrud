@@ -56,11 +56,10 @@
                     <p><small>Last updated 3 mins ago</small></p>
                 </div>
             </div>
-            <div class="card bg-success text-white mb-4">
+            <div class="card bg-success text-white mb-4" id="allClasses">
                 <div class="card-body">
-                    <h5 class="card-title">Panel title that wraps to a new line</h5>
-                    <p>This is a longer card with supporting text below as a natural lead-in to additional content.
-                        This content is a little bit longer.</p>
+                    <h5 class="card-title">Lista wszystkich klas</h5>
+                    <p>Wejdz aby zobaczyć listę wszystkich klas w szkole</p>
                 </div>
             </div>
         </div>
@@ -97,6 +96,10 @@
             window.location.href = '/StudentList';
         });
 
+        const listaKlas = document.getElementById('allClasses');
+        listaKlas.addEventListener('click', function() {
+            window.location.href = '/listaKlas';
+        });
         // jQuery:
         // $('#manageStudentCard').click(function() {
         //     window.location.href = '/managestudent';
