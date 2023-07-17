@@ -24,13 +24,28 @@
             </div>
         </div>
 
+        <?php
+
+           date_default_timezone_set('Europe/Warsaw'); // Ustawiamy strefę czasową
+
+           $aktualnaData = date('Y-m-d'); // Aktualna data w formacie RRRR-MM-DD
+           $aktualnaGodzina = date('H:i:s'); // Aktualna godzina w formacie GG:MM:SS
+
+
+
+           ?>
+
         <div class="col-lg-4 mb-4 mb-lg-0">
 
             <div class="card bg-primary text-white mb-4 text-end">
                 <div class="card-body">
-                    <p>Tutaj pojawi sie aktualna data i godzina</p>
-                    <p>Panel powitalny</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat.</p>
+                    <p>Dzisiejsza data: {{$aktualnaData}}</p>
+                    <p></p>
+
+
+                    @auth
+                        <h1>Witaj, {{ auth()->user()->name }}!</h1>
+                    @endauth
                 </div>
             </div>
 
@@ -79,7 +94,7 @@
         // Vanilla JS:
         const manageStudentCard = document.getElementById('manageStudentCard');
         manageStudentCard.addEventListener('click', function() {
-            window.location.href = '/products';
+            window.location.href = '/StudentList';
         });
 
         // jQuery:

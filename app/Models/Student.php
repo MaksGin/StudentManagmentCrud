@@ -17,4 +17,6 @@ class Student extends Model
     protected $fillable = [
         'imie', 'nazwisko','numer_indeksu','miejsce_zamieszkania','numer_telefonu'
     ];
+
+
 }

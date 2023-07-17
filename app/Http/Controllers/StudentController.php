@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
-class ProductController extends Controller
+class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     function __construct()
     {
         $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
@@ -22,46 +18,36 @@ class ProductController extends Controller
         $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:product-delete', ['only' => ['destroy']]);
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(): View
     {
-        $products = Student::latest()->paginate(5);
-        return view('products.index',compact('products'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        $students = Student::all();
+        return view('students.index',compact('students'));
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create(): View
     {
-        return view('products.create');
+        return view('students.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request): RedirectResponse
     {
-        request()->validate([
-            'name' => 'required',
-            'detail' => 'required',
+        $validatedData = $request->validate([
+            'imie' => 'required',
+            'nazwisko' => 'required',
+            'numer_indeksu' => 'required',
+            'miejsce_zamieszkania' => 'required',
+            'numer_telefonu' => 'required',
         ]);
 
-        Product::create($request->all());
+        Student::create($validatedData);
 
-        return redirect()->route('products.index')
-            ->with('success','Product created successfully.');
+        return redirect()->route('index')
+            ->with('success', 'Udało się dodać studenta.');
     }
+
 
     /**
      * Display the specified resource.
@@ -74,51 +60,42 @@ class ProductController extends Controller
         return view('products.show',compact('product'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product): View
+
+    public function edit(Student $student): View
     {
-        return view('products.edit',compact('product'));
+        return view('students.edit',compact('student'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product): RedirectResponse
+
+    public function update(Request $request, Student $student)
     {
-        request()->validate([
+        $validatedData = $request->validate([
             'imie' => 'required',
             'nazwisko' => 'required',
             'numer_indeksu' => 'required',
             'miejsce_zamieszkania' => 'required',
-            'numer_telefonu' => 'required'
+            'numer_telefonu' => 'required',
         ]);
 
-        $product->update($request->all());
+        $student->update($validatedData);
 
-        return redirect()->route('products.index')
-            ->with('success','Product updated successfully');
+        return redirect()->route('index')
+            ->with('success', 'Dane studenta zaktualizowane.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product): RedirectResponse
-    {
-        $product->delete();
 
-        return redirect()->route('products.index')
-            ->with('success','Product deleted successfully');
+    public function destroy($id): RedirectResponse
+    {
+        $student = Student::find($id);
+
+        if (!$student) {
+            return redirect()->route('index')
+                ->with('error', 'Student not found.');
+        }
+
+        $student->delete();
+
+        return redirect()->route('index')
+            ->with('success', 'Student usunięty prawidłowo.');
     }
 }

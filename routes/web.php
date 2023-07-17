@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +26,19 @@ Route::get('/', function () {
 
 Auth::routes();
 
+//dodawanie studenta
+Route::get('/Student/create',[\App\Http\Controllers\StudentController::class,'create'])->name('student.create');
+Route::post('/Student/store',[\App\Http\Controllers\StudentController::class,'store'])->name('student.store');
+
+//edycja studenta
+Route::get('/students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
+Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
+
+//usuniecie studenta z listy
+Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
 
 Route::get('/main', [MainController::class, 'index'])->name('main');
-
+Route::get('/StudentList',[\App\Http\Controllers\StudentController::class,'index'])->name('index');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
