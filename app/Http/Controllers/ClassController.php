@@ -58,6 +58,19 @@ class ClassController
         return redirect()->route('index')
             ->with('success', 'Dane klasy zaktualizowane.');
     }
+    public function destroy($id): RedirectResponse
+    {
+        $class = Classes::find($id);
 
+        if (!$class) {
+            return redirect()->route('index')
+                ->with('error', 'Class not found.');
+        }
+
+        $class->delete();
+
+        return redirect()->route('index')
+            ->with('success', 'Klasa usunięta prawidłowo.');
+    }
 
 }

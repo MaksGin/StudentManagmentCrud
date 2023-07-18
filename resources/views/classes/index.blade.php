@@ -49,6 +49,13 @@
 
 
                 </td>
+                <td>
+                <form action="{{ route('classes.destroy', $class->id) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć klasę?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Usuń</button>
+                </form>
+                </td>
 
 
 

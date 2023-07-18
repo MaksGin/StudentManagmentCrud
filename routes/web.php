@@ -52,6 +52,11 @@ Route::post('/classes/store',[\App\Http\Controllers\ClassController::class,'stor
 Route::get('/classes/{class}/edit', [ClassController::class, 'edit'])->name('classes.edit');
 Route::put('/classes/{class}',[\App\Http\Controllers\ClassController::class,'update'])->name('classes.update');
 
+Route::delete('/classes/{student}', [ClassController::class, 'destroy'])->name('classes.destroy');
+
+//kalendarz
+Route::get('/calendar',[\App\Http\Controllers\CalendarController::class,'index'])->name('index');
+
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
