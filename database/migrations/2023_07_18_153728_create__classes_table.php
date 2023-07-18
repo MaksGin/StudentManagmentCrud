@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('Classes', function (Blueprint $table) {
             $table->id();
             $table->string('nazwa');
-            $table->string('rok szkolny');
+            $table->string('rok_szkolny');
             $table->string('profil');
             $table->string('wychowawca');
             $table->Integer('liczba_uczniow');

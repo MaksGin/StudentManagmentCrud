@@ -49,16 +49,7 @@ class StudentController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product): View
-    {
-        return view('products.show',compact('product'));
-    }
+
 
 
     public function edit(Student $student): View

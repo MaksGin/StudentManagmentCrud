@@ -2,6 +2,22 @@
 
 @section('content')
     <h1>Lista klas</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+            </div>
+            <div class="col">
+
+            </div>
+            <div class="col text-end" style="margin-bottom: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href = '{{ route('classes.create') }}'">Dodaj klasę</button>
+
+            </div>
+
+        </div>
+    </div>
     <table class="table table-striped table-hover">
         <thead>
         <tr>
@@ -26,6 +42,14 @@
                 <td>{{$class->liczba_uczniow}}</td>
                 <td>{{$class->godziny_lekcyjne}}</td>
 
+                <td>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href = '{{ route('classes.edit', ['class' => $class->id]) }}'">
+                        Edytuj klasę
+                    </button>
+
+
+                </td>
+
 
 
 
@@ -34,4 +58,6 @@
         @endforeach
         </tbody>
     </table>
+
+
 @endsection

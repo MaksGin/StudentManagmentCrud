@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProductController;
@@ -42,6 +43,14 @@ Route::get('/StudentList',[\App\Http\Controllers\StudentController::class,'index
 
 //Lista klas
 Route::get('listaKlas',[\App\Http\Controllers\ClassController::class,'index'])->name('index');
+
+//dodawanie klasy
+Route::get('/classes/create',[\App\Http\Controllers\ClassController::class,'create'])->name('classes.create');
+Route::post('/classes/store',[\App\Http\Controllers\ClassController::class,'store'])->name('classes.store');
+
+//edycja klasy
+Route::get('/classes/{class}/edit', [ClassController::class, 'edit'])->name('classes.edit');
+Route::put('/classes/{class}',[\App\Http\Controllers\ClassController::class,'update'])->name('classes.update');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
