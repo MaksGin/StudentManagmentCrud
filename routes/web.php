@@ -3,7 +3,7 @@
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainController;
-use App\Http\Controllers\ProductController;
+
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
@@ -42,7 +42,7 @@ Route::get('/main', [MainController::class, 'index'])->name('main');
 Route::get('/StudentList',[\App\Http\Controllers\StudentController::class,'index'])->name('index');
 
 //Lista klas
-Route::get('listaKlas',[\App\Http\Controllers\ClassController::class,'index'])->name('index');
+Route::get('listaKlas',[\App\Http\Controllers\ClassController::class,'index'])->name('index1');
 
 //dodawanie klasy
 Route::get('/classes/create',[\App\Http\Controllers\ClassController::class,'create'])->name('classes.create');
@@ -54,8 +54,13 @@ Route::put('/classes/{class}',[\App\Http\Controllers\ClassController::class,'upd
 
 Route::delete('/classes/{student}', [ClassController::class, 'destroy'])->name('classes.destroy');
 
-//kalendarz
-Route::get('/calendar',[\App\Http\Controllers\CalendarController::class,'index'])->name('index');
+
+// routes/web.php
+Route::get('/classes/{class}', [ClassController::class, 'show'])->name('classes.show');
+// routes/web.php
+Route::post('/classes/{class}/addStudent', [ClassController::class, 'addStudent'])->name('classes.addStudent');
+
+
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);

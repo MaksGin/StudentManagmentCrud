@@ -1,6 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+            </div>
+            <div class="col">
+
+            </div>
+            <div class="col text-end" style="margin-bottom: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href = '{{ route('main') }}'">Główna</button>
+
+
+            </div>
+
+        </div>
+    </div>
 <h1>Lista studentów</h1>
     <table class="table table-striped table-hover">
         <thead>

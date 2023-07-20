@@ -18,5 +18,8 @@ class Classes extends Model
         'nazwa', 'rok_szkolny','profil','wychowawca','liczba_uczniow','godziny_lekcyjne'
     ];
 
-
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'class_student', 'class_id', 'student_id');
+    }
 }

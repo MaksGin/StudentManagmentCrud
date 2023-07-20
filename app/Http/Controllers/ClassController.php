@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 
 use App\Models\Classes;
 use App\Models\Student;
-use http\Env\Request;
+
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 class ClassController
@@ -14,6 +15,8 @@ class ClassController
         $classes = Classes::all();
         return view('classes.index',compact('classes'));
     }
+
+
 
     public function create(): View
     {
@@ -69,8 +72,41 @@ class ClassController
 
         $class->delete();
 
-        return redirect()->route('index')
+        return redirect()->route('index1')
             ->with('success', 'Klasa usunięta prawidłowo.');
     }
+
+    public function show(Classes $class)
+    {
+        $key = 0;
+        $students = $class->students;
+        $className = $class->nazwa;
+        $allStudents = Student::whereDoesntHave('classes')->get();
+
+        return view('classes.show', compact('class', 'students','className','allStudents','key'));
+    }
+
+
+    public function addStudent(Request $request, Classes $class)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:students,id',
+        ]);
+
+        $studentId = $request->input('student_id');
+        $student = Student::find($studentId);
+
+        // Sprawdź, czy uczeń już nie jest przypisany do innej klasy
+        $existingClass = $student->classes->first(); //pobieram z relacji classes modelu student pierwszy element ktory jest przypisany do ucznia
+        if ($existingClass && $existingClass->id !== $class->id) {
+            return redirect()->route('classes.show', $class->id)->with('error', 'Ten uczeń jest już przypisany do innej klasy.');
+        }
+
+        // Przypisz ucznia do klasy (z unikalnością)
+        $class->students()->syncWithoutDetaching([$studentId]);
+
+        return redirect()->route('classes.show', $class->id)->with('success', 'Uczeń został dodany do klasy.');
+    }
+
 
 }
