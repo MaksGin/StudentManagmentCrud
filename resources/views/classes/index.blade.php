@@ -34,7 +34,7 @@
         </thead>
         <tbody>
         @foreach($classes as $class)
-            <tr data-url="{{ route('classes.show', $class->id) }}">
+            <tr>
                 <th scope="row">{{$class->id}}</th>
                 <td>{{$class->nazwa}}</td>
                 <td>{{$class->rok_szkolny}}</td>
@@ -48,36 +48,34 @@
                         Edytuj klasę
                     </a>
                 </td>
-                <!-- poprawic przycisk usuwania klasy, usuwanie studenta dziala -->
+
                 <td>
-                    <a href="#" class="btn btn-danger" onclick="event.preventDefault(); if(confirm('Czy na pewno chcesz usunąć klasę?')) document.getElementById('delete-form-{{ $class->id }}').submit();">
-                        Usuń
-                    </a>
-                    <form id="delete-form-{{ $class->id }}" action="{{ route('classes.destroy', $class->id) }}" method="POST" style="display: none;">
+                    <form action="{{ route('classes.destroy', ['class' => $class->id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Usuń</button>
                     </form>
                 </td>
+
             </tr>
         @endforeach
 
         </tbody>
     </table>
+    <!-- Ensure jQuery is included before this script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        // Pobierz wszystkie wiersze tabeli
-        const rows = document.querySelectorAll('tr[data-url]');
+        $(document).ready(function () {
 
-        // Dla każdego wiersza dodaj nasłuchiwanie na zdarzenie kliknięcia
-        rows.forEach(row => {
-            row.addEventListener('click', () => {
-                // Pobierz adres URL z atrybutu data-url
-                const url = row.getAttribute('data-url');
+            $('tbody tr').click(function () {
 
-                // Przekieruj użytkownika na adres URL
-                window.location.href = url;
+                const classId = $(this).find('th').text();
+                window.location.href = '/classes/' + classId;
             });
         });
     </script>
+
 
 
 @endsection

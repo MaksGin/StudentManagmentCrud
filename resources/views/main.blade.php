@@ -66,7 +66,7 @@
 
         <div class="col-lg-4 mb-4 mb-lg-0">
 
-            <div class="card bg-warning text-white text-center mb-4">
+            <div class="card bg-warning text-white text-center mb-4" id="newStudents">
                 <div class="card-body">
                     <h5 class="card-title">Nowi studenci</h5>
                     <p>Lista nowych studentów</p>
@@ -80,7 +80,7 @@
                     <p><small>Last updated 3 mins ago</small></p>
                 </div>
             </div>
-            <div class="card bg-secondary text-white text-end mb-4">
+            <div class="card bg-secondary text-white text-end mb-4" id="calendar">
                 <div class="card-body">
                     <h5 class="card-title">Kalendarz</h5>
                     <p>sprawdz nadchodzące eventy</p>
@@ -99,6 +99,16 @@
         const listaKlas = document.getElementById('allClasses');
         listaKlas.addEventListener('click', function() {
             window.location.href = '/listaKlas';
+        });
+
+        const newStudents = document.getElementById('newStudents');
+        newStudents.addEventListener('click', function() {
+            window.location.href = '/newStudents';
+        });
+
+        const calendar = document.getElementById('calendar');
+        calendar.addEventListener('click', function() {
+            window.location.href = '/calendar';
         });
         // jQuery:
         // $('#manageStudentCard').click(function() {

@@ -89,4 +89,21 @@ class StudentController extends Controller
         return redirect()->route('index')
             ->with('success', 'Student usunięty prawidłowo.');
     }
+
+    public function show($id): View
+    {
+        $studentShow = Student::find($id);
+
+        return view('students.show', compact('studentShow'));
+    }
+
+    public function newStudents(): View
+    {
+        //wyświetl studentów którzy nie maja żadnej przypisanej klasy czyli są traktowani jako nowi
+        $students = Student::whereDoesntHave('classes')->get();
+
+        return view('students.newStudents', compact('students'));
+
+
+    }
 }

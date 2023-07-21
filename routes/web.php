@@ -27,6 +27,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+/*
+ *   STUDENT
+ *
+ *
+ */
+
 //dodawanie studenta
 Route::get('/Student/create',[\App\Http\Controllers\StudentController::class,'create'])->name('student.create');
 Route::post('/Student/store',[\App\Http\Controllers\StudentController::class,'store'])->name('student.store');
@@ -41,6 +47,18 @@ Route::delete('/students/{student}', [StudentController::class, 'destroy'])->nam
 Route::get('/main', [MainController::class, 'index'])->name('main');
 Route::get('/StudentList',[\App\Http\Controllers\StudentController::class,'index'])->name('index');
 
+//profil studenta
+Route::get('/student/{id}',[StudentController::class,'show'])->name('student.show');
+
+//nowi studenci
+Route::get('/newStudents',[StudentController::class,'newStudents'])->name('newStudents');
+
+/*
+ *
+ *  KLASY
+ *
+ */
+
 //Lista klas
 Route::get('listaKlas',[\App\Http\Controllers\ClassController::class,'index'])->name('index1');
 
@@ -52,7 +70,8 @@ Route::post('/classes/store',[\App\Http\Controllers\ClassController::class,'stor
 Route::get('/classes/{class}/edit', [ClassController::class, 'edit'])->name('classes.edit');
 Route::put('/classes/{class}',[\App\Http\Controllers\ClassController::class,'update'])->name('classes.update');
 
-Route::delete('/classes/{student}', [ClassController::class, 'destroy'])->name('classes.destroy');
+Route::delete('/classes/{class}', [ClassController::class, 'destroy'])->name('classes.destroy');
+
 
 
 // routes/web.php
@@ -61,6 +80,11 @@ Route::get('/classes/{class}', [ClassController::class, 'show'])->name('classes.
 Route::post('/classes/{class}/addStudent', [ClassController::class, 'addStudent'])->name('classes.addStudent');
 
 
+/*
+ *
+ *  KALENDARZ
+ */
+Route::get('/calendar', [\App\Http\Controllers\CalendarController::class, 'index'])->name('index');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);

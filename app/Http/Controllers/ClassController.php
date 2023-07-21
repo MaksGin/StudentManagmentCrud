@@ -58,32 +58,33 @@ class ClassController
 
         $class->update($validatedData);
 
-        return redirect()->route('index')
+        return redirect()->route('index1')
             ->with('success', 'Dane klasy zaktualizowane.');
     }
-    public function destroy($id): RedirectResponse
+    public function destroy($id)
     {
         $class = Classes::find($id);
 
         if (!$class) {
-            return redirect()->route('index')
-                ->with('error', 'Class not found.');
+            return redirect()->route('index1')->with('error', 'Class not found.');
+        }else{
+            $class->delete();
+
+            return redirect()->route('index1')->with('success', 'Klasa usunięta prawidłowo.');
+
         }
 
-        $class->delete();
-
-        return redirect()->route('index1')
-            ->with('success', 'Klasa usunięta prawidłowo.');
     }
+
 
     public function show(Classes $class)
     {
-        $key = 0;
+
         $students = $class->students;
         $className = $class->nazwa;
         $allStudents = Student::whereDoesntHave('classes')->get();
 
-        return view('classes.show', compact('class', 'students','className','allStudents','key'));
+        return view('classes.show', compact('class', 'students','className','allStudents'));
     }
 
 

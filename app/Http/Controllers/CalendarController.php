@@ -11,7 +11,6 @@ class CalendarController
 {
     public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-
         return view('calendar.index');
     }
 

@@ -24,9 +24,7 @@
             <th scope="col">id</th>
             <th scope="col">Imie</th>
             <th scope="col">Nazwisko</th>
-            <th scope="col">Numer indeksu</th>
-            <th scope="col">Miejsce zamieszkania</th>
-            <th scope="col">Numer telefonu rodzica</th>
+            <th scope="col">Klasa</th>
             <th>Działania</th>
         </tr>
         </thead>
@@ -36,10 +34,13 @@
             <th scope="row">{{$student->id}}</th>
             <td>{{$student->imie}}</td>
             <td>{{$student->nazwisko}}</td>
-            <td>{{$student->numer_indeksu}}</td>
-            <td>{{$student->miejsce_zamieszkania}}</td>
-            <td>{{$student->numer_telefonu}}</td>
-
+            <td>
+                @if($student->classes->isEmpty())
+                    Brak
+                @else
+                    {{$student->classes->first()->nazwa}}
+                @endif
+            </td>
             <td>
                 <form action="{{ route('students.edit', $student->id) }}" method="GET">
                     @csrf
@@ -62,6 +63,19 @@
     </table>
 <button type="button" class="btn btn-primary" onclick="window.location.href = '{{ route('student.create') }}'">Dodaj studenta</button>
 
+    <!-- Ensure jQuery is included before this script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('tbody tr').click(function () {
+
+                const studentId = $(this).find('th').text();
+                window.location.href = '/student/' + studentId;
+            });
+        });
+    </script>
 
 
 @endsection
