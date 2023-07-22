@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Lista klas</h1>
+    <h1>Twoja klasa</h1>
 
     <div class="container">
         <div class="row">
@@ -11,12 +11,6 @@
             <div class="col">
 
             </div>
-            <div class="col text-end" style="margin-bottom: 20px;">
-                <button type="button" class="btn btn-secondary" onclick="window.location.href = '{{ route('main') }}'">Główna</button>
-                <button type="button" class="btn btn-secondary" onclick="window.location.href = '{{ route('classes.create') }}'">Dodaj klasę</button>
-
-            </div>
-
         </div>
     </div>
     <table class="table table-striped table-hover">
@@ -43,6 +37,8 @@
                 <td>{{$class->students->count()}} / {{$class->liczba_uczniow}}</td>
                 <td>{{$class->godziny_lekcyjne}}</td>
 
+
+
                 <td>
                     <a href="{{ route('classes.edit', ['class' => $class->id]) }}" class="btn btn-secondary">
                         Edytuj klasę
@@ -56,6 +52,7 @@
                         <button type="submit" class="btn btn-danger">Usuń</button>
                     </form>
                 </td>
+
 
             </tr>
         @endforeach

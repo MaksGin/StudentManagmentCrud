@@ -2,18 +2,32 @@
 
 
 @section('content')
+<div class="container">
     <div class="row">
-        <div class="col-lg-12 margin-tb">
+        <div class="col">
             <div class="pull-left">
                 <h2>Role Management</h2>
             </div>
+        </div>
+
+        <div class="col"></div>
+
+        <div class="col">
             <div class="pull-right">
                 @can('role-create')
-                    <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New Role</a>
+                    <a class="btn btn-success d-inline-block" href="{{ route('permissions.create') }}">Stwórz permisje</a>
+                @endcan
+                @can('role-create')
+                    <a class="btn btn-success d-inline-block" href="{{ route('roles.create') }}">Stwórz Role</a>
                 @endcan
             </div>
         </div>
+
     </div>
+
+</div>
+
+
 
 
     @if ($message = Session::get('success'))
@@ -52,5 +66,5 @@
     {!! $roles->render() !!}
 
 
-    <p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>
+    <p class="text-center text-primary"><small>Gintner Maksymilian</small></p>
 @endsection

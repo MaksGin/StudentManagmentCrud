@@ -9,7 +9,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\PermissionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,7 +60,7 @@ Route::get('/newStudents',[StudentController::class,'newStudents'])->name('newSt
  */
 
 //Lista klas
-Route::get('listaKlas',[\App\Http\Controllers\ClassController::class,'index'])->name('index1');
+Route::get('/listaKlas',[\App\Http\Controllers\ClassController::class,'index'])->name('index1');
 
 //dodawanie klasy
 Route::get('/classes/create',[\App\Http\Controllers\ClassController::class,'create'])->name('classes.create');
@@ -72,7 +72,8 @@ Route::put('/classes/{class}',[\App\Http\Controllers\ClassController::class,'upd
 
 Route::delete('/classes/{class}', [ClassController::class, 'destroy'])->name('classes.destroy');
 
-
+//klasa wychowawcy
+Route::get('/twojaKlasa',[ClassController::class,'showClass'])->name('classes.showClass');
 
 // routes/web.php
 Route::get('/classes/{class}', [ClassController::class, 'show'])->name('classes.show');
@@ -91,3 +92,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UserController::class);
     Route::resource('products', ProductController::class);
 });
+
+
+/*
+ *
+ * PERMISJE CRUD
+ */
+
+Route::get('permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
+Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');

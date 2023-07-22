@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <div class="card bg-dark text-white mb-4">
+            <div class="card bg-dark text-white mb-4" id="twojaKlasa">
                 <div class="card-body">
                     <h5 class="card-title">Twoja klasa</h5>
                     <p>przeglądaj listę uczniów w twojej klasie</p>
@@ -109,6 +109,11 @@
         const calendar = document.getElementById('calendar');
         calendar.addEventListener('click', function() {
             window.location.href = '/calendar';
+        });
+
+        const twojaKlasa = document.getElementById('twojaKlasa');
+        twojaKlasa.addEventListener('click', function() {
+            window.location.href = '/twojaKlasa';
         });
         // jQuery:
         // $('#manageStudentCard').click(function() {

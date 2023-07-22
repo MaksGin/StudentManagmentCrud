@@ -10,7 +10,7 @@ use Illuminate\Http\RedirectResponse;
 
 class StudentController extends Controller
 {
-
+/*
     function __construct()
     {
         $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
@@ -18,7 +18,7 @@ class StudentController extends Controller
         $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:product-delete', ['only' => ['destroy']]);
     }
-
+*/
     public function index(): View
     {
         $students = Student::all();

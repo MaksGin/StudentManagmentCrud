@@ -7,6 +7,7 @@ use App\Models\Classes;
 use App\Models\Student;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 class ClassController
 {
@@ -107,6 +108,25 @@ class ClassController
         $class->students()->syncWithoutDetaching([$studentId]);
 
         return redirect()->route('classes.show', $class->id)->with('success', 'Uczeń został dodany do klasy.');
+    }
+
+    public function showClass(): View
+    {
+        $wychowawca = Auth::user();
+
+        // Sprawdzamy, czy zalogowany użytkownik ma rolę "Wychowawca1c"
+        if ($wychowawca->hasRole(['Wychowawca1a', 'Wychowawca1b', 'Wychowawca1c', 'Wychowawca1d'])) {
+            // Pobieramy klasy przypisane do określonego wychowawcy
+            $classes = Classes::whereHas('users', function ($query) use ($wychowawca) {
+                $query->where('user_id', $wychowawca->id);
+            })->get();
+
+            return view('classes.showClass', compact('classes','wychowawca'));
+        } else {
+
+            abort(403, 'Brak dostępu.');
+        }
+
     }
 
 
