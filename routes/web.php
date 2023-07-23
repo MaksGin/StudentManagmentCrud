@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\EventController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,6 +54,11 @@ Route::get('/student/{id}',[StudentController::class,'show'])->name('student.sho
 //nowi studenci
 Route::get('/newStudents',[StudentController::class,'newStudents'])->name('newStudents');
 
+
+Route::post('/save-event', [EventController::class, 'saveEvent'])->name('saveEvent');
+Route::get('/get-events', [\App\Http\Controllers\EventController::class, 'getEvents'])->name('getEvents');
+
+
 /*
  *
  *  KLASY
@@ -86,11 +92,10 @@ Route::post('/classes/{class}/addStudent', [ClassController::class, 'addStudent'
  *  KALENDARZ
  */
 Route::get('/calendar', [\App\Http\Controllers\CalendarController::class, 'index'])->name('index');
-
+Route::post('/calendar', [\App\Http\Controllers\EventController::class, 'saveEvent'])->name('index');
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
-    Route::resource('products', ProductController::class);
 });
 
 
