@@ -11,4 +11,9 @@ class Event extends Model
 
     protected $fillable = ['title', 'start_time', 'end_time'];
 
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_events', 'event_id', 'user_id');
+    }
 }

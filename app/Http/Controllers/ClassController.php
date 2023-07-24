@@ -98,10 +98,15 @@ class ClassController
         $studentId = $request->input('student_id');
         $student = Student::find($studentId);
 
-        // Sprawdź, czy uczeń już nie jest przypisany do innej klasy
-        $existingClass = $student->classes->first(); //pobieram z relacji classes modelu student pierwszy element ktory jest przypisany do ucznia
+
+        $existingClass = $student->classes->first();
         if ($existingClass && $existingClass->id !== $class->id) {
             return redirect()->route('classes.show', $class->id)->with('error', 'Ten uczeń jest już przypisany do innej klasy.');
+        }
+
+        // czy klasa nie jest pełna
+        if ($class->students->count() >= $class->liczba_uczniow) {
+            return redirect()->route('classes.show', $class->id)->with('error', 'Klasa jest pełna. Nie można dodać więcej uczniów.');
         }
 
         // Przypisz ucznia do klasy (z unikalnością)
@@ -109,6 +114,7 @@ class ClassController
 
         return redirect()->route('classes.show', $class->id)->with('success', 'Uczeń został dodany do klasy.');
     }
+
 
     public function showClass(): View
     {

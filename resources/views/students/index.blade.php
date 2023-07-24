@@ -30,7 +30,7 @@
         </thead>
         <tbody>
         @foreach($students as $student)
-        <tr>
+        <tr class="clickable-row">
             <th scope="row">{{$student->id}}</th>
             <td>{{$student->imie}}</td>
             <td>{{$student->nazwisko}}</td>
@@ -68,11 +68,16 @@
 
     <script>
         $(document).ready(function () {
-
+            // Click event for table rows
             $('tbody tr').click(function () {
-
                 const studentId = $(this).find('th').text();
                 window.location.href = '/student/' + studentId;
+            });
+
+            // Click event for delete buttons
+            $('tbody tr .btn-danger').click(function (event) {
+                // Stop the propagation of the click event
+                event.stopPropagation();
             });
         });
     </script>

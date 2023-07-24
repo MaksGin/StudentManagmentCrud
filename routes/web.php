@@ -46,7 +46,7 @@ Route::put('/students/{student}', [StudentController::class, 'update'])->name('s
 Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
 
 Route::get('/main', [MainController::class, 'index'])->name('main');
-Route::get('/StudentList',[\App\Http\Controllers\StudentController::class,'index'])->name('index');
+Route::get('/StudentList',[\App\Http\Controllers\StudentController::class,'index'])->name('student.index');
 
 //profil studenta
 Route::get('/student/{id}',[StudentController::class,'show'])->name('student.show');

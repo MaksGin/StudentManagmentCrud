@@ -86,7 +86,7 @@ class StudentController extends Controller
 
         $student->delete();
 
-        return redirect()->route('index')
+        return redirect()->route('student.index')
             ->with('success', 'Student usunięty prawidłowo.');
     }
 

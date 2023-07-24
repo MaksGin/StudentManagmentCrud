@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Classes::class, 'user_classes', 'user_id', 'class_id');
     }
+
+    public function events(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Event::class, 'user_events', 'user_id', 'event_id');
+    }
 }
