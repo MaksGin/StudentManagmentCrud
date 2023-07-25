@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classes;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-use DB;
-use Hash;
+
 use Illuminate\Support\Arr;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -50,14 +51,35 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            'roles' => 'required|array',
         ]);
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
-
         $user = User::create($input);
+
+        // Przypisanie ról do użytkownika
         $user->assignRole($request->input('roles'));
+
+        $roleToClassMap = [
+            'Wychowawca1a' => '1a',
+            'Wychowawca1b' => '1b',
+            'Wychowawca1c' => '1c',
+
+        ];
+        // Przypisanie użytkownika do wydziału na podstawie ról
+        $selectedRoles = $request->input('roles', []);
+        foreach ($selectedRoles as $roleName) {
+            if (isset($roleToClassMap[$roleName])) {
+                $ClassName = $roleToClassMap[$roleName];
+                $class = Classes::where('nazwa', $ClassName)->first();
+                if ($class) {
+                    $user->classes()->attach($class);
+                }
+            }
+        }
+
+
 
         return redirect()->route('users.index')
             ->with('success','User created successfully');
@@ -86,8 +108,13 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
+        $roleToClassMap = [
+            'Wychowawca1a' => '1a',
+            'Wychowawca1b' => '1b',
+            'Wychowawca1c' => '1c',
 
-        return view('users.edit',compact('user','roles','userRole'));
+        ];
+        return view('users.edit',compact('user','roles','userRole','roleToClassMap'));
     }
 
     /**
@@ -95,33 +122,55 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id): RedirectResponse
+
+    //poprawic funkcje update na podstawie funkcji z tamtego projektu
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
-            'roles' => 'required'
+            'roles' => 'required|array',
         ]);
 
         $input = $request->all();
-        if(!empty($input['password'])){
+
+
+        if (!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);
-        }else{
-            $input = Arr::except($input,array('password'));
+        } else {
+            $input = Arr::except($input, ['password']);
         }
 
         $user = User::find($id);
+        $user->roles()->detach();
+        // Usuń wszystkie rekordy z tabeli user_classes dla tego użytkownika
+        $user->classes()->delete();
+
+        // Zaktualizuj dane użytkownika
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
+        // Wyświetl aktualne przypisane klasy przed aktualizacją
+        dump($user->classes->pluck('nazwa')->toArray());
+        // Dodaj użytkownika do nowych klas na podstawie przesłanych ról
+        $newRoles = $request->input('roles', []);
+        foreach ($newRoles as $role) {
+            $user->assignRole($role);
 
-        $user->assignRole($request->input('roles'));
-
+            // Pobierz klasę na podstawie nazwy roli i przypisz użytkownika do tej klasy
+            $class = Classes::where('nazwa', $role)->first();
+            if ($class) {
+                // Użyj tabeli pośredniej user_classes do przypisania użytkownika do klasy
+                $user->classes()->attach($class->id);
+            }
+        }
+    // Wyświetl przypisane klasy po aktualizacji
+        dump($user->classes->pluck('nazwa')->toArray());
         return redirect()->route('users.index')
-            ->with('success','User updated successfully');
+            ->with('success', 'User updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.

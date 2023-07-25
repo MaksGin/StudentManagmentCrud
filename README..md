@@ -4,5 +4,7 @@ Student Crud App and More .
 3. Przypisanie studenta do klasy (jest)
 4. Eventy w kalendarzu dla nauczyciela, zapisywanie sprawdzianow itd (?)
 5. Zarządzanie informacjami studenta z widoku Wychowawcy 
-6. Zarządzanie rolami i permisjami z widoku Admina
+6. Zarządzanie rolami i permisjami z widoku Admina (jest)
 7. Lista klas, edycja klas, dodawanie klas (jest)
+8. Widok ucznia (kalendarz ze sprawdzianami, lista przedmiotów, oceny)
+9. Przypisanie wychowawcy do klasy przez dyrektora (do przemyślenia)

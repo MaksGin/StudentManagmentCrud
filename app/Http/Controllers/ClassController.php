@@ -14,6 +14,7 @@ class ClassController
     public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $classes = Classes::all();
+
         return view('classes.index',compact('classes'));
     }
 
@@ -37,7 +38,7 @@ class ClassController
 
         Classes::create($validatedData);
 
-        return redirect()->route('index')
+        return redirect()->route('index1')
             ->with('success', 'Udało się dodać klase.');
     }
 
@@ -121,7 +122,7 @@ class ClassController
         $wychowawca = Auth::user();
 
         // Sprawdzamy, czy zalogowany użytkownik ma rolę "Wychowawca1c"
-        if ($wychowawca->hasRole(['Wychowawca1a', 'Wychowawca1b', 'Wychowawca1c', 'Wychowawca1d'])) {
+        if ($wychowawca->hasRole(['Wychowawca1a', 'Wychowawca1b', 'Wychowawca1c', 'Wychowawca1d','Wychowawca2a'])) {
             // Pobieramy klasy przypisane do określonego wychowawcy
             $classes = Classes::whereHas('users', function ($query) use ($wychowawca) {
                 $query->where('user_id', $wychowawca->id);

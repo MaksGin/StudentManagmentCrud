@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+    @auth <!-- przymiarka do widoku ucznia -->
+        @role('Uczen')
+        witam
+        @else
     <div class="row">
         <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
 
@@ -88,6 +92,8 @@
             </div>
         </div>
     </div>
+    @endrole
+    @endauth
     <script>
         // Użyj Vanilla JS lub jQuery, aby obsłużyć kliknięcie na divie
         // Vanilla JS:

@@ -12,7 +12,7 @@ class Event extends Model
     protected $fillable = ['title', 'start_time', 'end_time'];
 
 
-    public function users()
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_events', 'event_id', 'user_id');
     }
