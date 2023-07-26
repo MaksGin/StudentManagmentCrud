@@ -62,6 +62,8 @@ Route::get('/get-events', [\App\Http\Controllers\EventController::class, 'getEve
 Route::get('/gradesList',[StudentController::class,'gradeList'])->name('students.StudentView.grades');
 //profil studenta z widoku ucznia
 Route::get('/student/{id}/profile',[StudentController::class,'showProfile'])->name('students.StudentView.profile');
+Route::get('/studentsManage',[StudentController::class,'studentManage'])->name('Students.manage');
+Route::post('/assignStudent',[StudentController::class,'assignStudent'])->name('assignStudent');
 /*
  *
  *  KLASY

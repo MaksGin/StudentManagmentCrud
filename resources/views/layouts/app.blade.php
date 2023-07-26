@@ -50,6 +50,7 @@
                     @else
                         <li><a class="nav-link" href="{{ route('main') }}">Główna</a></li>
                         @hasrole('Admin')
+                        <li><a class="nav-link" href="{{ route('Students.manage') }}">Manage Students</a></li>
                         <li><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
                         <li><a class="nav-link" href="{{ route('roles.index') }}">Manage Role</a></li>
                         @endhasrole

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-            // Dodaj indeksy dla obu kolumn, aby przyspieszyć zapytania
-            $table->index('student_id');
-            $table->index('user_id');
+            // Dodajemy klucze obce do tabeli student_user
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

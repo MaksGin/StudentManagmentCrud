@@ -119,4 +119,27 @@ class StudentController extends Controller
         $studentShow = User::find($id);
         return view('students.StudentView.profile', compact('studentShow'));
     }
+
+    public function studentManage(){
+
+        $students = Student::all();
+        $users = User::all();
+        return view('students.manage',compact('students','users'));
+    }
+
+    public function assignStudent(Request $request): RedirectResponse
+    {
+        $studentId = $request->input('student_id');
+        $userId = $request->input('user_id');
+
+        $student = Student::find($studentId);
+        $user = User::find($userId);
+
+        if($student && $user){
+            $student->user()->attach($user);
+            return redirect()->route('Students.manage')->with('success', 'Przypisanie wykonane pomyślnie.');
+        }else{
+            return redirect()->back()->with('error', 'Nie można przypisać studenta do użytkownika.');
+        }
+    }
 }
