@@ -1,10 +1,54 @@
 @extends('layouts.app')
 
 @section('content')
-    @auth <!-- przymiarka do widoku ucznia -->
-        @role('Uczen')
-        witam
-        @else
+
+    <?php
+
+    date_default_timezone_set('Europe/Warsaw'); // Ustawiamy strefę czasową
+
+    $aktualnaData = date('Y-m-d'); // Aktualna data w formacie RRRR-MM-DD
+    $aktualnaGodzina = date('H:i:s'); // Aktualna godzina w formacie GG:MM:SS
+
+
+
+    ?>
+    @auth <!-- Sprawdzenie, czy użytkownik jest zalogowany -->
+    @role('Uczen')
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card mb-3" style="border: 2px solid black;"  id="ocenyPanel">
+                    <img src="OcenyPanel.png" class="card-img-top" alt="..."  style="width: 30%; margin: 0 auto; padding: 10px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Oceny</h5>
+                        <p class="card-text"></p>
+                        <p class="card-text"><small class="text-muted">Przejrzyj twoje oceny</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-3" style="border: 2px solid black;" id="profilePanel">
+                    <img src="profilePic.png" class="card-img-top" alt="..."  style="width: 30%; margin: 0 auto; padding: 10px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Twój profil</h5>
+                        <p class="card-text"></p>
+                        <p class="card-text"><small class="text-muted">Informacje o Tobie</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-3" style="border: 2px solid black;" id="thirdPanel">
+                    <img src="profilePic.png" class="card-img-top" alt="..."  style="width: 30%; margin: 0 auto; padding: 10px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Oceny</h5>
+                        <p class="card-text"></p>
+                        <p class="card-text"><small class="text-muted">coś</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @elserole('Admin')
     <div class="row">
         <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
 
@@ -28,16 +72,7 @@
             </div>
         </div>
 
-        <?php
 
-           date_default_timezone_set('Europe/Warsaw'); // Ustawiamy strefę czasową
-
-           $aktualnaData = date('Y-m-d'); // Aktualna data w formacie RRRR-MM-DD
-           $aktualnaGodzina = date('H:i:s'); // Aktualna godzina w formacie GG:MM:SS
-
-
-
-           ?>
 
         <div class="col-lg-4 mb-4 mb-lg-0">
 
@@ -93,10 +128,20 @@
         </div>
     </div>
     @endrole
-    @endauth
+@endauth
     <script>
-        // Użyj Vanilla JS lub jQuery, aby obsłużyć kliknięcie na divie
-        // Vanilla JS:
+
+        function elementExists(elementId) {
+            return !!document.getElementById(elementId);
+        }
+
+        if (elementExists('ocenyPanel')) {
+            const ocenyPanel = document.getElementById('ocenyPanel');
+            ocenyPanel.addEventListener('click', function() {
+                window.location.href = '/gradesList';
+            });
+        }
+
         const manageStudentCard = document.getElementById('manageStudentCard');
         manageStudentCard.addEventListener('click', function() {
             window.location.href = '/StudentList';
@@ -121,9 +166,6 @@
         twojaKlasa.addEventListener('click', function() {
             window.location.href = '/twojaKlasa';
         });
-        // jQuery:
-        // $('#manageStudentCard').click(function() {
-        //     window.location.href = '/managestudent';
-        // });
+
     </script>
 @endsection

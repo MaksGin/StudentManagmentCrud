@@ -54,4 +54,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Event::class, 'user_events', 'user_id', 'event_id');
     }
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'student_user', 'user_id', 'student_id');
+    }
 }

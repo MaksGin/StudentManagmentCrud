@@ -22,10 +22,10 @@ class UserController extends Controller
      */
     public function index(Request $request): View
     {
-        $data = User::latest()->paginate(5);
+        $data = User::latest()->paginate(20);
 
         return view('users.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+            ->with('i', ($request->input('page', 1) - 1) * 20);
     }
 
     /**
@@ -67,7 +67,7 @@ class UserController extends Controller
             'Wychowawca1c' => '1c',
 
         ];
-        // Przypisanie użytkownika do wydziału na podstawie ról
+
         $selectedRoles = $request->input('roles', []);
         foreach ($selectedRoles as $roleName) {
             if (isset($roleToClassMap[$roleName])) {
@@ -125,7 +125,7 @@ class UserController extends Controller
      * @return RedirectResponse
      */
 
-    //poprawic funkcje update na podstawie funkcji z tamtego projektu
+
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -145,28 +145,32 @@ class UserController extends Controller
         }
 
         $user = User::find($id);
-        $user->roles()->detach();
-        // Usuń wszystkie rekordy z tabeli user_classes dla tego użytkownika
-        $user->classes()->delete();
+        //ważne!
+        $user->roles()->detach(); //zdejmuje role uzytkownika
+        $user->assignRole($request->input('roles')); //przypisuje role które zaznacze
+        $user->classes()->detach(); //usuwam z tabeli classess przypisana klase do uzytkownika
 
-        // Zaktualizuj dane użytkownika
-        $user->update($input);
-        // Wyświetl aktualne przypisane klasy przed aktualizacją
-        dump($user->classes->pluck('nazwa')->toArray());
-        // Dodaj użytkownika do nowych klas na podstawie przesłanych ról
-        $newRoles = $request->input('roles', []);
-        foreach ($newRoles as $role) {
-            $user->assignRole($role);
+        $roleToClassMap = [
+            'Wychowawca1a' => '1a',
+            'Wychowawca1b' => '1b',
+            'Wychowawca1c' => '1c',
+            'Wychowawca1d' => '1d',
+            'Wychowawca2a' => '2a',
+            'Wychowawca2b' => '2b',
+            'Wychowawca2c' => '2c',
+            'Wychowawca2d' => '2d',
+        ];
 
-            // Pobierz klasę na podstawie nazwy roli i przypisz użytkownika do tej klasy
-            $class = Classes::where('nazwa', $role)->first();
-            if ($class) {
-                // Użyj tabeli pośredniej user_classes do przypisania użytkownika do klasy
-                $user->classes()->attach($class->id);
+        foreach($request->input('roles',[]) as $roleName){
+            if(isset($roleToClassMap[$roleName])){
+                $className = $roleToClassMap[$roleName];
+                $class = Classes::where('nazwa',$className)->first();
+                if($class){
+                    $user->classes()->attach($class);
+                }
             }
         }
-    // Wyświetl przypisane klasy po aktualizacji
-        dump($user->classes->pluck('nazwa')->toArray());
+
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully');
     }

@@ -8,3 +8,4 @@ Student Crud App and More .
 7. Lista klas, edycja klas, dodawanie klas (jest)
 8. Widok ucznia (kalendarz ze sprawdzianami, lista przedmiotów, oceny)
 9. Przypisanie wychowawcy do klasy przez dyrektora (do przemyślenia)
+10. mechanizm, który pozwoli administratorowi przypisać studenta do użytkownika (czyli utworzyć konto użytkownika dla studenta)

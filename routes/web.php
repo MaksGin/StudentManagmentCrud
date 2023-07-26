@@ -48,7 +48,7 @@ Route::delete('/students/{student}', [StudentController::class, 'destroy'])->nam
 Route::get('/main', [MainController::class, 'index'])->name('main');
 Route::get('/StudentList',[\App\Http\Controllers\StudentController::class,'index'])->name('student.index');
 
-//profil studenta
+//profil studenta z widoku Wychowawcy
 Route::get('/student/{id}',[StudentController::class,'show'])->name('student.show');
 
 //nowi studenci
@@ -58,7 +58,10 @@ Route::get('/newStudents',[StudentController::class,'newStudents'])->name('newSt
 Route::post('/save-event', [EventController::class, 'saveEvent'])->name('saveEvent');
 Route::get('/get-events', [\App\Http\Controllers\EventController::class, 'getEvents'])->name('getEvents');
 
-
+//ocenyStudenta
+Route::get('/gradesList',[StudentController::class,'gradeList'])->name('students.StudentView.grades');
+//profil studenta z widoku ucznia
+Route::get('/student/{id}/profile',[StudentController::class,'showProfile'])->name('students.StudentView.profile');
 /*
  *
  *  KLASY

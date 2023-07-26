@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -105,5 +106,17 @@ class StudentController extends Controller
         return view('students.newStudents', compact('students'));
 
 
+    }
+
+    public function gradeList(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
+        return view('students.StudentView.grades');
+    }
+
+    public function showProfile($id)
+    {
+
+        $studentShow = User::find($id);
+        return view('students.StudentView.profile', compact('studentShow'));
     }
 }
