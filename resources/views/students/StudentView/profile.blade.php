@@ -2,7 +2,6 @@
 
 @section('content')
 
-    <section style="background-color: #eee;">
 
 
         <div class="row">
@@ -12,8 +11,8 @@
                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
                              class="rounded-circle img-fluid" style="width: 150px;">
 
-                        <h5 class="my-3">{{ $studentShow->imie }}</h5>
-
+                        <h5 class="my-3">{{ $studentShow->name }}</h5>
+                        <h5 class="my-3">{{ $student->miejsce_zamieszkania }}</h5>
 
                     </div>
                 </div>

@@ -9,7 +9,7 @@
         <select name="student_id" id="student_id">
             <!-- Tutaj możesz wygenerować opcje z listy studentów z bazy danych -->
             @foreach ($students as $student)
-            <option>{{ $student -> imie }} {{ $student -> nazwisko }}</option>
+                <option value="{{ $student->id }}">{{ $student->imie }} {{ $student->nazwisko }}</option>
             @endforeach
 
         </select>
@@ -17,7 +17,7 @@
         <select name="user_id" id="user_id">
             <!-- Tutaj możesz wygenerować opcje z listy studentów z bazy danych -->
             @foreach ($users as $user)
-                <option>{{ $user -> name }} {{ $user -> email }}</option>
+                <option value="{{ $user->id }}">{{ $user->name }} {{ $user->email }}</option>
             @endforeach
 
         </select>

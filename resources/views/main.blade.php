@@ -36,16 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card mb-3" style="border: 2px solid black;" id="thirdPanel">
-                    <img src="profilePic.png" class="card-img-top" alt="..."  style="width: 30%; margin: 0 auto; padding: 10px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Oceny</h5>
-                        <p class="card-text"></p>
-                        <p class="card-text"><small class="text-muted">coś</small></p>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
     @elserole('Admin')
@@ -130,7 +121,7 @@
     @endrole
 @endauth
     <script>
-
+        const loggedInUserId = {{ auth()->user()->id }};
         function elementExists(elementId) {
             return !!document.getElementById(elementId);
         }
@@ -141,7 +132,13 @@
                 window.location.href = '/gradesList';
             });
         }
-
+        if (elementExists('profilePanel')) {
+            const profilePanel = document.getElementById('profilePanel');
+            profilePanel.addEventListener('click', function() {
+                // Use the 'loggedInUserId' variable to construct the URL
+                window.location.href = `/student/${loggedInUserId}/profile`;
+            });
+        }
         const manageStudentCard = document.getElementById('manageStudentCard');
         manageStudentCard.addEventListener('click', function() {
             window.location.href = '/StudentList';

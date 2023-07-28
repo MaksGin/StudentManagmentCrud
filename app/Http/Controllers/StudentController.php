@@ -113,14 +113,16 @@ class StudentController extends Controller
         return view('students.StudentView.grades');
     }
 
-    public function showProfile($id)
+    public function showProfile($id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-
+        $loggedInUser = auth()->user();
         $studentShow = User::find($id);
-        return view('students.StudentView.profile', compact('studentShow'));
+        $student = $loggedInUser->students->first();
+        return view('students.StudentView.profile', compact('studentShow','student'));
     }
 
-    public function studentManage(){
+    public function studentManage(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
 
         $students = Student::all();
         $users = User::all();
