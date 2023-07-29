@@ -36,16 +36,27 @@
                     </div>
                 </div>
             </div>
+            <div class="col">
+                <div class="card mb-3" style="border: 2px solid black;" id="calendar1">
+                    <img src="profilePic.png" class="card-img-top" alt="..."  style="width: 30%; margin: 0 auto; padding: 10px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Kalendarz</h5>
+                        <p class="card-text"></p>
+                        <p class="card-text"><small class="text-muted">sprawdz nadchodzące sprawdziany/wydarzenia</small></p>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
-    @elserole('Admin')
+
+    @elserole('Admin|Wychowawca1a|Wychowawca1b|Wychowawca1c')
     <div class="row">
         <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
 
             <div class="card bg-success text-white text-center mb-4" id="manageStudentCard">
                 <div class="card-body">
-                    <h5 class="card-title">Manage Student</h5>
+                    <h5 class="card-title">Zarządzaj studentami</h5>
 
                 </div>
             </div>
@@ -79,10 +90,9 @@
                 </div>
             </div>
 
-            <div class="card bg-danger text-white text-center my-4">
+            <div class="card bg-danger text-white text-center my-4" id="WpiszOceny">
                 <div class="card-body">
-                    <h5 class="card-title">Panel title</h5>
-                    <p>This card has a regular title and short paragraphy of text below it.</p>
+                    <h5 class="card-title">Wpisz oceny</h5>
                     <p><small>Last updated 3 mins ago</small></p>
                 </div>
             </div>
@@ -125,7 +135,13 @@
         function elementExists(elementId) {
             return !!document.getElementById(elementId);
         }
-
+        if (elementExists('WpiszOceny')) {
+            const WpiszOceny = document.getElementById('WpiszOceny');
+            WpiszOceny.addEventListener('click', function() {
+                // Use the 'loggedInUserId' variable to construct the URL
+                window.location.href = `/mark/student`;
+            });
+        }
         if (elementExists('ocenyPanel')) {
             const ocenyPanel = document.getElementById('ocenyPanel');
             ocenyPanel.addEventListener('click', function() {
@@ -139,6 +155,15 @@
                 window.location.href = `/student/${loggedInUserId}/profile`;
             });
         }
+        if (elementExists('calendar1')) {
+            const calendar1 = document.getElementById('calendar1');
+            calendar1.addEventListener('click', function() {
+                // Use the 'loggedInUserId' variable to construct the URL
+                window.location.href = `/calendar`;
+            });
+        }
+
+
         const manageStudentCard = document.getElementById('manageStudentCard');
         manageStudentCard.addEventListener('click', function() {
             window.location.href = '/StudentList';

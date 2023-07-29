@@ -6,6 +6,7 @@ use App\Http\Controllers\MainController;
 
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +65,11 @@ Route::get('/gradesList',[StudentController::class,'gradeList'])->name('students
 Route::get('/student/{id}/profile',[StudentController::class,'showProfile'])->name('students.StudentView.profile');
 Route::get('/studentsManage',[StudentController::class,'studentManage'])->name('Students.manage');
 Route::post('/assignStudent',[StudentController::class,'assignStudent'])->name('assignStudent');
+
+//widok wpisywania ocen wychowawcy
+
+Route::get('/mark/student',[TeacherController::class,'index'])->name('teachers.studentMark');
+Route::post('/save_mark', [TeacherController::class, 'saveMark'])->name('save_mark');
 /*
  *
  *  KLASY

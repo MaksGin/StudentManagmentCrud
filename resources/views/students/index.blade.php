@@ -16,9 +16,6 @@
         <th style="display: none;">Id</th>
         <th>Imie</th>
         <th>Nazwisko</th>
-        <th>Numer indeksu</th>
-        <th>Miejsce zamieszkania</th>
-        <th>Numer Telefonu rodzica</th>
         <th>Klasa</th>
         <th>Edytuj</th>
         <th>Usun</th>
@@ -32,9 +29,6 @@
         <th style="display: none;">{{$student->id}}</th>
         <td>{{$student->imie}}</td>
         <td>{{$student->nazwisko}}</td>
-        <td>{{$student->numer_indeksu}}</td>
-        <td>{{$student->miejsce_zamieszkania}}</td>
-        <td>{{$student->numer_telefonu}}</td>
         <td>
             @if($student->classes->isEmpty())
                 Brak

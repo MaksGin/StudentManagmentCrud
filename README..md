@@ -6,7 +6,16 @@ Student Crud App and More .
 5. Zarządzanie informacjami studenta z widoku Wychowawcy 
 6. Zarządzanie rolami i permisjami z widoku Admina (jest)
 7. Lista klas, edycja klas, dodawanie klas (jest)
-8. Widok ucznia (kalendarz ze sprawdzianami, lista przedmiotów, oceny)
+8. Widok ucznia (kalendarz ze sprawdzianami, lista przedmiotów, oceny) 
 9. Przypisanie wychowawcy do klasy przez dyrektora (do przemyślenia)
-10. mechanizm, który pozwoli administratorowi przypisać studenta do użytkownika (czyli utworzyć konto użytkownika dla studenta)
-11. DataTables dla widoku Listy studentow
+10. mechanizm, który pozwoli administratorowi przypisać studenta 
+do użytkownika (czyli utworzyć konto użytkownika dla studenta) (jest ale jeszcze do poprawy)
+11. DataTables dla widoku Listy studentow (jest)
+12. Eventy w kalendarzu ktore stworzy wychowawca danej klasy np sprawdzian rowniez 
+bede pokazywane w kalendarzu ucznia
+13. Widok wpisywania ocen z przedmiotow dla ucznia (wychowawca ma liste uczniow swojej klasy 
+i wybiera ucznia ktoremu przypisze ocene)
+14. Stworzenie tabeli posredniej gdzie polacze przedmiot z nauczycielem
+
+
+

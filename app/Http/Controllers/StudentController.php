@@ -110,7 +110,14 @@ class StudentController extends Controller
 
     public function gradeList(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        return view('students.StudentView.grades');
+
+        //get pobieram wszystko, first pierwszy pasujacy rekord
+        // Pobieramy wszystkie oceny użytkownika wraz z informacjami o przedmiotach
+        $loggedInUser = auth()->user();
+        $oceny = $loggedInUser->grades()->with('subject')->get();
+
+        return view('students.StudentView.grades', compact('oceny'));
+
     }
 
     public function showProfile($id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application

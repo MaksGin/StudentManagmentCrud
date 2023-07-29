@@ -15,7 +15,7 @@ class Subject extends Model
      * @var array
      */
    public function grades(){
-       $this->belongsTo(Grade::class,'subject_id');
+       $this->hasMany(Grade::class,'subject_id');
    }
 
 }
