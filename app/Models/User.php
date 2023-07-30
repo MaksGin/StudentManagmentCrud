@@ -62,4 +62,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Grade::class, 'user_id');
     }
+    public function subject(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Subject::class, 'user_subjects','user_id','subject_id');
+    }
 }

@@ -69,7 +69,7 @@ Route::post('/assignStudent',[StudentController::class,'assignStudent'])->name('
 //widok wpisywania ocen wychowawcy
 
 Route::get('/mark/student',[TeacherController::class,'index'])->name('teachers.studentMark');
-Route::post('/save_mark', [TeacherController::class, 'saveMark'])->name('save_mark');
+Route::post('/mark/store', [TeacherController::class,'store'])->name('grade.store');
 /*
  *
  *  KLASY

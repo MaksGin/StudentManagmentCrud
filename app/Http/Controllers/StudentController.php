@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Grade;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -108,17 +109,16 @@ class StudentController extends Controller
 
     }
 
-    public function gradeList(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function gradeList()
     {
-
-        //get pobieram wszystko, first pierwszy pasujacy rekord
-        // Pobieramy wszystkie oceny użytkownika wraz z informacjami o przedmiotach
         $loggedInUser = auth()->user();
-        $oceny = $loggedInUser->grades()->with('subject')->get();
+        $idStudentazalogowanego = $loggedInUser->students()->first()->id;
+
+        $oceny = Grade::where('student_id', $idStudentazalogowanego)->with('subject')->get();
 
         return view('students.StudentView.grades', compact('oceny'));
-
     }
+
 
     public function showProfile($id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
