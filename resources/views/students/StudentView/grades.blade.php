@@ -7,11 +7,24 @@
     $matematykaOceny = collect();
 @endphp
 
+@php
+    $currentSubject = null; // zmienna do sledzenia nazwy przedmiotu
+@endphp
+
 @foreach ($oceny as $ocena)
-    <p>Przedmiot: {{ $ocena->subject->name }}</p>
-    <p>Ocena: {{$ocena->grade}}</p>
-    <hr>
+
+    @if ($ocena->subject->name !== $currentSubject)
+        @php
+            $currentSubject = $ocena->subject->name; //jesli przedmiot sie zmieni wypisujemy nowy nagłówek
+        @endphp
+        <hr>
+        <h3>Przedmiot: {{ $currentSubject }}</h3>
+
+    @endif
+    {{ $ocena->grade }},
+
 @endforeach
+
 
 
 

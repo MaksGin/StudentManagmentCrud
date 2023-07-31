@@ -109,10 +109,11 @@ class StudentController extends Controller
 
     }
 
-    public function gradeList()
+    public function gradeList(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $loggedInUser = auth()->user();
         $idStudentazalogowanego = $loggedInUser->students()->first()->id;
+
 
         $oceny = Grade::where('student_id', $idStudentazalogowanego)->with('subject')->get();
 

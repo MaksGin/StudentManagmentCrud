@@ -25,25 +25,27 @@ class TeacherController extends Controller
 
         //naprawic problem pomiedzy user_id a student_id poniewaz roznia i przez ta sa bledy
         $przedmioty = $user->subject;
+
         return view('teachers.studentMark',compact('studentsInClass','przedmioty','studentIdsInClass'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
-            'uczen' => 'required',
+            'uczen_id' => 'required',
             'przedmioty' => 'required',
-            'ocena' => 'required',
         ]);
 
-        // Save the grade data to the database using the Grade model
+        $ocena = $request->input('ocena');
+
+
         Grade::create([
-            'student_id' => $validatedData['uczen'],
+            'student_id' => $validatedData['uczen_id'],
             'subject_id' => $validatedData['przedmioty'],
-            'grade' => $validatedData['ocena'],
+            'grade' => $ocena,
         ]);
 
-        // Redirect back or show a success message
-        return redirect()->route('index')->with('success', 'Grade saved successfully!');
+        // You may also add some success message or redirect back to the form
+        return redirect()->route('teachers.studentMark')->with('success', 'Udało się dodać ocenę.');
     }
 }
