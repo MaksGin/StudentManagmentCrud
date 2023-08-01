@@ -51,8 +51,8 @@
     </div>
 
     @elserole('Admin|Wychowawca1a|Wychowawca1b|Wychowawca1c')
-    <div class="row">
-        <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+        <div class="row">
+            <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
 
             <div class="card bg-success text-white text-center mb-4" id="manageStudentCard">
                 <div class="card-body">
@@ -66,6 +66,8 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
                 </div>
             </div>
+
+
             <div class="card bg-warning text-white mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Panel title</h5>
@@ -90,12 +92,14 @@
                 </div>
             </div>
 
+            @can('enter-grades')
             <div class="card bg-danger text-white text-center my-4" id="WpiszOceny">
                 <div class="card-body">
                     <h5 class="card-title">Wpisz oceny</h5>
                     <p><small>Last updated 3 mins ago</small></p>
                 </div>
             </div>
+            @endcan
             <div class="card bg-success text-white mb-4" id="allClasses">
                 <div class="card-body">
                     <h5 class="card-title">Lista wszystkich klas</h5>

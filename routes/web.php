@@ -57,6 +57,7 @@ Route::get('/newStudents',[StudentController::class,'newStudents'])->name('newSt
 
 
 Route::post('/save-event', [EventController::class, 'saveEvent'])->name('saveEvent');
+Route::post('/delete-event',[\App\Http\Controllers\EventController::class, 'deleteEvent'])->name('deleteEvent');
 Route::get('/get-events', [\App\Http\Controllers\EventController::class, 'getEvents'])->name('getEvents');
 
 //ocenyStudenta
@@ -104,6 +105,7 @@ Route::post('/classes/{class}/addStudent', [ClassController::class, 'addStudent'
  */
 Route::get('/calendar', [\App\Http\Controllers\CalendarController::class, 'index'])->name('index');
 Route::post('/calendar', [\App\Http\Controllers\EventController::class, 'saveEvent'])->name('index');
+
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);

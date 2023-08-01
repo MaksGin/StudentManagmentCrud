@@ -13,7 +13,7 @@ do użytkownika (czyli utworzyć konto użytkownika dla studenta) (jest ale jesz
 12. Eventy w kalendarzu ktore stworzy wychowawca danej klasy np sprawdzian rowniez 
 bede pokazywane w kalendarzu ucznia
 13. Widok wpisywania ocen z przedmiotow dla ucznia (wychowawca ma liste uczniow swojej klasy 
-i wybiera ucznia ktoremu przypisze ocene)
+i wybiera ucznia ktoremu przypisze ocene) (jest)
 14. Stworzenie tabeli posredniej gdzie polacze przedmiot z nauczycielem (jest)
 
 

@@ -46,4 +46,14 @@ class EventController extends Controller
         return response()->json($formattedEvents); //formatuje eventy do formatu json
     }
 
+    public function deleteEvent($id){
+
+        $event = Event::find($id);
+        $event->delete();
+    }
+
+    public function edit($id){
+
+    }
+
 }

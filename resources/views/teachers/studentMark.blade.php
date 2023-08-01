@@ -31,7 +31,7 @@
                     <div class="mb-3">
                         <input type="checkbox" name="ocena" class="btn-check" id="ocena1" value="1" autocomplete="off">
                         <label class="btn btn-danger" for="ocena1">1</label>
-                        <input type="checkbox" name="ocena" class="btn-check" id="ocena2" value="2"autocomplete="off">
+                        <input type="checkbox" name="ocena" class="btn-check" id="ocena2" value="2" autocomplete="off">
                         <label class="btn btn-warning" for="ocena2">2</label>
                         <input type="checkbox" name="ocena" class="btn-check" id="ocena3" value="3" autocomplete="off">
                         <label class="btn btn-secondary" for="ocena3">3</label>

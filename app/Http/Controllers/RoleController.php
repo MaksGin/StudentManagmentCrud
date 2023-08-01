@@ -7,10 +7,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
+
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -108,48 +109,17 @@ class RoleController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required'
+            'permission' => 'required',
         ]);
 
+        $role = Role::find($id);
+        $role->name = $request->input('name');
+        $role->save();
 
+        $role->syncPermissions($request->input('permission'));
 
-        $input = $request->all();
-        if (!empty($input['password'])) {
-            $input['password'] = Hash::make($input['password']);
-        } else {
-            $input = Arr::except($input, ['password']);
-        }
-
-        $user = User::find($id);
-        $user->update($input);
-
-
-        // Usuń wszystkie obecne role przypisane do użytkownika
-        $user->roles()->detach();
-
-        // Pobierz aktualne role użytkownika
-        $currentRoles = $user->roles->pluck('name')->toArray();
-
-        // Znajdź nowe role, które nie istnieją w aktualnych rolach użytkownika
-        $newRoles = array_diff($request->input('roles'), $currentRoles);
-
-        // Znajdź role, które są obecnie przypisane, ale nie zostały przekazane w formularzu
-        $rolesToRemove = array_diff($currentRoles, $request->input('roles'));
-
-        // Dodaj nowe role
-        foreach ($newRoles as $role) {
-            $user->assignRole($role);
-        }
-
-        // Usuń role, które nie są już wybrane
-        foreach ($rolesToRemove as $role) {
-            $user->removeRole($role);
-        }
-
-        return redirect()->route('users.index')
-            ->with('success', 'User updated successfully');
+        return redirect()->route('roles.index')
+            ->with('success','Role updated successfully');
     }
 
     /**
