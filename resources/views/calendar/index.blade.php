@@ -200,8 +200,10 @@
 
 
             currentEvent.setProp('title', newTitle);
-            currentEvent.setStart(moment(currentEvent.start).format('YYYY-MM-DD') + 'T' + newStartTime);
-            currentEvent.setEnd(moment(currentEvent.end).format('YYYY-MM-DD') + 'T' + newEndTime);
+            currentEvent.setStart(moment(currentEvent.start).format('YYYY-MM-DD') + ' ' + newStartTime + ':00');
+            currentEvent.setEnd(moment(currentEvent.start).format('YYYY-MM-DD') + ' ' + newEndTime + ':00');
+
+
 
             // Tutaj możesz umieścić kod do aktualizacji wydarzenia w bazie danych
             const eventId = document.getElementById('updateEventId').value;

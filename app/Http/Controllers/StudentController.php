@@ -60,7 +60,7 @@ class StudentController extends Controller
     }
 
 
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Student $student): RedirectResponse
     {
         $validatedData = $request->validate([
             'imie' => 'required',

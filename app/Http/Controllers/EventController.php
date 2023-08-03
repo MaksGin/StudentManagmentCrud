@@ -62,16 +62,16 @@ class EventController extends Controller
         }
     }
 
-    public function edit(Request $request,Event $event ): \Illuminate\Http\JsonResponse
+    public function edit(Request $request): \Illuminate\Http\JsonResponse
     {
-        $validatedData = $request->validate([
-            'editEventTitle' => 'required',
-            'editEventStartTime' => 'required',
-            'editEventEndTime' => 'required',
+        $eventId = $request->input('eventId');
+        $newEventData = $request->all();
 
-        ]);
         try {
-            $event->update($validatedData);
+            $event = Event::findOrFail($eventId);
+            $event->fill($newEventData); //wypełniam model nowym danymi z formularza
+            $event->save();
+
             return response()->json(['message' => 'Event updated successfully'], 200);
         } catch (ModelNotFoundException $exception) {
             return response()->json(['error' => 'Event not found'], 404);
