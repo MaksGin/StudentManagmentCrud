@@ -13,7 +13,7 @@
 
     ?>
     @auth <!-- Sprawdzenie, czy użytkownik jest zalogowany -->
-    @role('Uczen')
+@role('Uczen')
     <div class="container">
         <div class="row">
             <div class="col">
@@ -49,8 +49,7 @@
 
         </div>
     </div>
-
-    @elserole('Admin|Wychowawca1a|Wychowawca1b|Wychowawca1c')
+@elserole('Admin|Wychowawca1a|Wychowawca1b|Wychowawca1c')
         <div class="row">
             <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
 
@@ -132,10 +131,11 @@
             </div>
         </div>
     </div>
-    @endrole
+@endrole
 @endauth
-    <script>
+<script>
         const loggedInUserId = {{ auth()->user()->id }};
+
         function elementExists(elementId) {
             return !!document.getElementById(elementId);
         }

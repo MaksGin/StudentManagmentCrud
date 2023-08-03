@@ -85,8 +85,16 @@
             <!-- Modal Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                <button type="button" class="btn btn-primary" id="saveChangesButton">Zapisz zmiany</button>
-                <button type="button" class="btn btn-danger" id="deleteEventButton">Usuń wydarzenie</button>
+                <form id="updateEventForm">
+                    <input type="hidden" id="updateEventId" name="eventId">
+                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                </form>
+                <!-- Add the form for event deletion -->
+                <form id="deleteEventForm">
+                    <input type="hidden" id="deleteEventId" name="eventId">
+                    <button type="submit" class="btn btn-danger">Usuń wydarzenie</button>
+                </form>
+
             </div>
         </div>
     </div>
@@ -105,7 +113,7 @@
         var editEventTitle = document.getElementById('editEventTitle'); // Pobieramy pole tytułu wydarzenia w modalu
         var editEventStartTime = document.getElementById('editEventStartTime'); // Pobieramy pole czasu rozpoczęcia wydarzenia w modalu
         var editEventEndTime = document.getElementById('editEventEndTime'); // Pobieramy pole czasu zakończenia wydarzenia w modalu
-        var deleteEventButton = document.getElementById('deleteEventButton'); // Pobieramy przycisk usuwania wydarzenia w modalu
+
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
             contentHeight: 600,
@@ -127,6 +135,29 @@
 
                         console.error('Błąd podczas pobierania wydarzeń z bazy danych');
                     }
+                },
+                {
+                    url: '/delete-event', // Endpoint to delete events from the database
+                    method: 'POST',
+                    extraParams: {
+                        customParam: 'customValue'
+                    },
+                    eventParam: 'eventId', // Specify the name of the query parameter for event ID
+                    failure: function() {
+                        console.error('Error while deleting events from the database');
+                    },
+                },
+                {
+                    url: '/edit-event', // Endpoint to edit events in the database
+                    method: 'POST',
+                    extraParams: {
+                        customParam: 'customValue'
+                    },
+                    eventParam: 'eventId',
+                    // Specify the name of the query parameter for event ID
+                    failure: function() {
+                        console.error('Error while editing events in the database');
+                    },
                 }
             ],
             eventDrop: function(info) {
@@ -138,8 +169,8 @@
                 editEventTitle.value = currentEvent.title;
                 editEventStartTime.value = moment(currentEvent.start).format('HH:mm');
                 editEventEndTime.value = moment(currentEvent.end).format('HH:mm');
-
-
+                document.getElementById('deleteEventId').value = info.event.id;
+                document.getElementById('updateEventId').value = info.event.id;
                 // Wyświetlamy modal
                 editEventModal.style.display = 'block';
 
@@ -149,12 +180,23 @@
 
 
         });
+        var cancelButton = document.querySelector('#editEventModal .modal-footer .btn-secondary');
+
+        // Obsługa kliknięcia na przycisk "Anuluj"
+        cancelButton.addEventListener('click', function() {
+            // Ukryj modal
+            editEventModal.style.display = 'none';
+        });
+
+
         // Obsługa kliknięcia przycisku "Zapisz zmiany"
-        document.getElementById('saveChangesButton').addEventListener('click', function() {
+        document.getElementById('updateEventForm').addEventListener('submit', function(event) {
+            event.preventDefault();
             // Pobieramy wartości z pól w modalu
             var newTitle = editEventTitle.value;
             var newStartTime = editEventStartTime.value;
             var newEndTime = editEventEndTime.value;
+
 
 
             currentEvent.setProp('title', newTitle);
@@ -162,22 +204,28 @@
             currentEvent.setEnd(moment(currentEvent.end).format('YYYY-MM-DD') + 'T' + newEndTime);
 
             // Tutaj możesz umieścić kod do aktualizacji wydarzenia w bazie danych
-
+            const eventId = document.getElementById('updateEventId').value;
+            editEventInDatabase(eventId, newTitle, newStartTime, newEndTime);
 
             editEventModal.style.display = 'none';
         });
-        // Obsługa kliknięcia przycisku "Usuń wydarzenie"
-        deleteEventButton.addEventListener('click', function() {
 
+        //obsluga usuwania z bazy danych
+        document.getElementById('deleteEventForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Get the eventId from the hidden input field
+            const eventId = document.getElementById('deleteEventId').value;
             currentEvent.remove();
 
-            // Tutaj możesz umieścić kod do usuwania wydarzenia z bazy danych
-            deleteEventFromDatabase(currentEvent);
+            // Call the deleteEventFromDatabase function with the event's ID
+            deleteEventFromDatabase(eventId);
+
             editEventModal.style.display = 'none';
         });
 
 
-        // Obsługa kliknięcia na przycisk "Dodaj wydarzenie"
+
+
         document.getElementById('addEventButton').addEventListener('click', function() {
             document.getElementById('eventForm').style.display = 'block';
         });
@@ -226,23 +274,48 @@
                 console.error('Błąd podczas zapisywania wydarzenia:', error);
             });
     }
+    function editEventInDatabase(eventId, newTitle, newStartTime, newEndTime) {
+        axios
+            .post(`/edit-event`, {
+                eventId: eventId,
+                title: newTitle,
+                start: newStartTime,
+                end: newEndTime
+            }, {
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(function(response) {
+                console.log('Event updated successfully');
+            })
+            .catch(function(error) {
+                console.error('Error while updating event:', error);
+            });
+    }
 
-    function deleteEventFromDatabase(eventData){
-        axios.post('/delete-event', eventData, {
+
+    function deleteEventFromDatabase(eventId) {
+        axios.post(`/delete-event`, null, {
+            params: {
+                eventId: eventId
+            },
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             }
         })
             .then(function(response) {
-                console.log('Wydarzenie usunięte w bazie danych');
+                console.log(response);
             })
             .catch(function(error) {
-                console.error('Błąd podczas usuwania wydarzenia:', error);
+                console.error(error.response.data);
             });
     }
+
+
 </script>
 <center><button id="addEventButton" class="btn btn-primary">Dodaj wydarzenie</button></center>
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "dc4641f860664c6e824b093274f50291"}'></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 </html>

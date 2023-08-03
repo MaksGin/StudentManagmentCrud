@@ -57,7 +57,11 @@ Route::get('/newStudents',[StudentController::class,'newStudents'])->name('newSt
 
 
 Route::post('/save-event', [EventController::class, 'saveEvent'])->name('saveEvent');
-Route::post('/delete-event',[\App\Http\Controllers\EventController::class, 'deleteEvent'])->name('deleteEvent');
+Route::post('/delete-event', [\App\Http\Controllers\EventController::class, 'deleteEvent'])->name('deleteEvent');
+Route::post('/edit-event', [\App\Http\Controllers\EventController::class, 'edit'])->name('editEvent');
+
+
+
 Route::get('/get-events', [\App\Http\Controllers\EventController::class, 'getEvents'])->name('getEvents');
 
 //ocenyStudenta

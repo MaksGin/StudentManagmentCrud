@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +38,7 @@ class EventController extends Controller
 
         foreach ($events as $event) {
             $formattedEvents[] = [
+                'id' => $event->id,
                 'title' => $event->title,
                 'start' => $event->start_time,
                 'end' => $event->end_time,
@@ -46,14 +48,34 @@ class EventController extends Controller
         return response()->json($formattedEvents); //formatuje eventy do formatu json
     }
 
-    public function deleteEvent($id){
+    public function deleteEvent(Request $request): \Illuminate\Http\JsonResponse
+    {
 
-        $event = Event::find($id);
-        $event->delete();
+        $eventId = $request->input('eventId');
+
+        try {
+            $event = Event::findOrFail($eventId);
+            $event->delete();
+            return response()->json(['message' => 'Event deleted successfully'], 200);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json(['error' => 'Event not found'], 404);
+        }
     }
 
-    public function edit($id){
+    public function edit(Request $request,Event $event ): \Illuminate\Http\JsonResponse
+    {
+        $validatedData = $request->validate([
+            'editEventTitle' => 'required',
+            'editEventStartTime' => 'required',
+            'editEventEndTime' => 'required',
 
+        ]);
+        try {
+            $event->update($validatedData);
+            return response()->json(['message' => 'Event updated successfully'], 200);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json(['error' => 'Event not found'], 404);
+        }
     }
 
 }
