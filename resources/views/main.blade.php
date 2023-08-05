@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+<head>
 
+    <style>
+    .uczenimg{
+        margin: 20px;
+    }
+
+    </style>
+</head>
     <?php
 
     date_default_timezone_set('Europe/Warsaw'); // Ustawiamy strefę czasową
@@ -14,123 +22,209 @@
     ?>
     @auth <!-- Sprawdzenie, czy użytkownik jest zalogowany -->
 @role('Uczen')
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="card mb-3" style="border: 2px solid black;"  id="ocenyPanel">
-                    <img src="OcenyPanel.png" class="card-img-top" alt="..."  style="width: 30%; margin: 0 auto; padding: 10px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Oceny</h5>
-                        <p class="card-text"></p>
-                        <p class="card-text"><small class="text-muted">Przejrzyj twoje oceny</small></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card mb-3" style="border: 2px solid black;" id="profilePanel">
-                    <img src="profilePic.png" class="card-img-top" alt="..."  style="width: 30%; margin: 0 auto; padding: 10px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Twój profil</h5>
-                        <p class="card-text"></p>
-                        <p class="card-text"><small class="text-muted">Informacje o Tobie</small></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card mb-3" style="border: 2px solid black;" id="calendar1">
-                    <img src="profilePic.png" class="card-img-top" alt="..."  style="width: 30%; margin: 0 auto; padding: 10px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Kalendarz</h5>
-                        <p class="card-text"></p>
-                        <p class="card-text"><small class="text-muted">sprawdz nadchodzące sprawdziany/wydarzenia</small></p>
-                    </div>
-                </div>
-            </div>
 
+    <div class="row row-cols-3 g-3">
+        <div class="col">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0" id="calendar1">
+                    <div class="col-md-4" >
+                        <img
+                            src="calendar.png"
+                            alt="Trendy Pants and Shoes"
+                            class="img-fluid rounded-start uczenimg"
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Kalendarz</h5>
+                                <p class="card-text">
+                                    Twórz wydarzenia żeby o niczym nie zapomnieć :)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0" id="ocenyPanel">
+                    <div class="col-md-4" >
+                        <img
+                            src="grade.png"
+                            alt="Trendy Pants and Shoes"
+                            class="img-fluid rounded-start uczenimg"
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Oceny</h5>
+                                <p class="card-text">
+                                    Sprawdz swoje oceny :)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0" id="profilePanel">
+                    <div class="col-md-4" >
+                        <img
+                            src="UczenUser.png"
+                            alt="Trendy Pants and Shoes"
+                            class="img-fluid rounded-start uczenimg"
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Profil</h5>
+                                <p class="card-text">
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @elserole('Admin|Wychowawca1a|Wychowawca1b|Wychowawca1c')
-        <div class="row">
-            <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-
-            <div class="card bg-success text-white text-center mb-4" id="manageStudentCard">
-                <div class="card-body">
-                    <h5 class="card-title">Zarządzaj studentami</h5>
-
-                </div>
-            </div>
-
-            <div class="card bg-info text-white text-end mb-4">
-                <div class="card-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                </div>
-            </div>
-
-
-            <div class="card bg-warning text-white mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Panel title</h5>
-                    <p>This card has supporting text below as a natural lead-in to additional content.</p>
-                    <p><small>Last updated 3 mins ago</small></p></div>
-            </div>
-        </div>
-
-
-
-        <div class="col-lg-4 mb-4 mb-lg-0">
-
-            <div class="card bg-primary text-white mb-4 text-end">
-                <div class="card-body">
-                    <p>Dzisiejsza data: {{$aktualnaData}}</p>
-                    <p></p>
-
-
-                    @auth
-                        <h1>Witaj, {{ auth()->user()->name }}!</h1>
-                    @endauth
-                </div>
-            </div>
-
-            @can('enter-grades')
-            <div class="card bg-danger text-white text-center my-4" id="WpiszOceny">
-                <div class="card-body">
-                    <h5 class="card-title">Wpisz oceny</h5>
-                    <p><small>Last updated 3 mins ago</small></p>
-                </div>
-            </div>
-            @endcan
-            <div class="card bg-success text-white mb-4" id="allClasses">
-                <div class="card-body">
-                    <h5 class="card-title">Lista wszystkich klas</h5>
-                    <p>Wejdz aby zobaczyć listę wszystkich klas w szkole</p>
+    <div class="container">
+       <center><h5 class="card-title text-justify" style="font-weight: bold; margin-top: 10px; margin-bottom: 20px;">Dzisiejsza data: {{$aktualnaData}}</h5></center>
+    </div>
+    <div class="row row-cols-3 g-3">
+        <div class="col">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0" id="manageStudentCard" >
+                    <div class="col-md-4" >
+                        <img
+                            src="studentManage.png"
+                            alt="Trendy Pants and Shoes"
+                            class="img-fluid rounded-start"
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Zarządzaj studentem</h5>
+                            <p class="card-text">
+                                Lista studentów przypisane do nich klasy z możliwością usuwania edycji i tworzenia nowego studenta
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4 mb-4 mb-lg-0">
-
-            <div class="card bg-warning text-white text-center mb-4" id="newStudents">
-                <div class="card-body">
-                    <h5 class="card-title">Nowi studenci</h5>
-                    <p>Lista nowych studentów</p>
+        @can('enter-grades')
+        <div class="col">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0" id="WpiszOceny">
+                    <div class="col-md-4">
+                        <img
+                            src="enterGrades.png"
+                            alt="Trendy Pants and Shoes"
+                            class="img-fluid rounded-start"
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Wpisz oceny</h5>
+                            <p class="card-text">
+                                Dodaj oceny z kartkówek/sprawdzianów ze swojego przedmiotu
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="card bg-dark text-white mb-4" id="twojaKlasa">
-                <div class="card-body">
-                    <h5 class="card-title">Twoja klasa</h5>
-                    <p>przeglądaj listę uczniów w twojej klasie</p>
-                    <p><small>Last updated 3 mins ago</small></p>
+        </div>
+        @endcan
+        <div class="col">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0" id="allClasses">
+                    <div class="col-md-4">
+                        <img
+                            src="communication.png"
+                            alt="Trendy Pants and Shoes"
+                            class="img-fluid rounded-start"
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Lista wszystkich klas</h5>
+                            <p class="card-text">
+                                Lista wszystkich klas w szkole.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="card bg-secondary text-white text-end mb-4" id="calendar">
-                <div class="card-body">
-                    <h5 class="card-title">Kalendarz</h5>
-                    <p>sprawdz nadchodzące eventy</p>
-                    <p><small>Last updated 3 mins ago</small></p></div>
+        </div>
+        <div class="col">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0" id="newStudents">
+                    <div class="col-md-4">
+                        <img
+                            src="add.png"
+                            alt="Trendy Pants and Shoes"
+                            class="img-fluid rounded-start"
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Nowi studenci</h5>
+                            <p class="card-text">
+                                Tutaj znajduje się lista nowych studentów przyjętych po rekrutacji, nie przypisanych do klasy.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0" id="twojaKlasa">
+                    <div class="col-md-4">
+                        <img
+                            src="elearning.png"
+                            alt="Trendy Pants and Shoes"
+                            class="img-fluid rounded-start"
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Twoja Klasa</h5>
+                            <p class="card-text">
+                                Informacje o klasie która uczysz.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0" id="calendar">
+                    <div class="col-md-4">
+                        <img
+                            src="calendar.png"
+                            alt="Trendy Pants and Shoes"
+                            class="img-fluid rounded-start"
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Kalendarz</h5>
+                            <p class="card-text">
+                                Twórz wydarzenia żeby o niczym nie zapomnieć :)</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 @endrole
 @endauth
 <script>
