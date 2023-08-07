@@ -45,6 +45,9 @@
     $(document).ready(function() {
         $('#example').DataTable( {
             dom: 'Bfrtip',
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pl.json',
+            },
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ]

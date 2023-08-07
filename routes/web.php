@@ -47,6 +47,7 @@ Route::put('/students/{student}', [StudentController::class, 'update'])->name('s
 Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
 
 Route::get('/main', [MainController::class, 'index'])->name('main');
+
 Route::get('/StudentList',[\App\Http\Controllers\StudentController::class,'index'])->name('student.index');
 
 //profil studenta z widoku Wychowawcy
@@ -55,24 +56,22 @@ Route::get('/student/{id}',[StudentController::class,'show'])->name('student.sho
 //nowi studenci
 Route::get('/newStudents',[StudentController::class,'newStudents'])->name('newStudents');
 
-
 Route::post('/save-event', [EventController::class, 'saveEvent'])->name('saveEvent');
 Route::post('/delete-event', [\App\Http\Controllers\EventController::class, 'deleteEvent'])->name('deleteEvent');
 Route::post('/edit-event', [\App\Http\Controllers\EventController::class, 'edit'])->name('editEvent');
-
-
-
 Route::get('/get-events', [\App\Http\Controllers\EventController::class, 'getEvents'])->name('getEvents');
 
 //ocenyStudenta
 Route::get('/gradesList',[StudentController::class,'gradeList'])->name('students.StudentView.grades');
+Route::get('calender', [EventController::class, 'index']);
+Route::post('calenderAjax', [EventController::class, 'ajax']);
+
 //profil studenta z widoku ucznia
 Route::get('/student/{id}/profile',[StudentController::class,'showProfile'])->name('students.StudentView.profile');
 Route::get('/studentsManage',[StudentController::class,'studentManage'])->name('Students.manage');
 Route::post('/assignStudent',[StudentController::class,'assignStudent'])->name('assignStudent');
 
 //widok wpisywania ocen wychowawcy
-
 Route::get('/mark/student',[TeacherController::class,'index'])->name('teachers.studentMark');
 Route::post('/mark/store', [TeacherController::class,'store'])->name('grade.store');
 /*

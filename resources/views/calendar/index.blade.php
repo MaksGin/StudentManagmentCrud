@@ -2,323 +2,161 @@
 
 @section('content')
     <!DOCTYPE html>
-<html lang='en'>
+<html>
 <head>
-    <meta charset='utf-8' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <style>
-        @keyframes slideDown {
-            0% {
-                transform: translateY(-100%);
-            }
-            100% {
-                transform: translateY(0);
-            }
-        }
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
-        #eventForm {
-            animation: slideDown 0.5s ease; /* Ustawiamy animację */
-            display: none; /* Początkowo ukrywamy formularz */
-            text-align: center;
-            margin-top: 50px;
-        }
-        html, body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-            font-size: 14px;
-        }
-
-        #calendar {
-            max-width: 800px; /* Maksymalna szerokość kalendarza */
-            margin: 0 auto; /* Wyśrodkowanie kalendarza na stronie */
-        }
-        #addEventButton{
-            margin-top: 50px;
-
-        }
-
-    </style>
 </head>
 <body>
+<div class="container">
 
-
-<div id="calendar"></div>
-<form id="eventForm" style="display: none;" method="POST" action="/save-event">
-    @csrf
-    <input type="text" id="eventTitle" name="title" placeholder="Tytuł wydarzenia" required>
-    <input type="date" id="eventDate" name="start" placeholder="Data wydarzenia" required>
-    <input type="time" id="eventStartTime" name="start" placeholder="Godzina startu" required>
-    <input type="time" id="eventEndTime" name="end" placeholder="Godzina zakończenia" required>
-
-    <button id="saveEventButton" class="btn btn-success">Zapisz</button>
-</form>
-
-<!-- The Modal -->
-<div class="modal" id="editEventModal" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Edytuj wydarzenie</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="editEventTitle">Tytuł:</label>
-                    <input type="text" class="form-control" id="editEventTitle">
-                </div>
-                <div class="form-group">
-                    <label for="editEventStartTime">Czas rozpoczęcia:</label>
-                    <input type="time" class="form-control" id="editEventStartTime">
-                </div>
-                <div class="form-group">
-                    <label for="editEventEndTime">Czas zakończenia:</label>
-                    <input type="time" class="form-control" id="editEventEndTime">
-                </div>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                <form id="updateEventForm">
-                    <input type="hidden" id="updateEventId" name="eventId">
-                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
-                </form>
-                <!-- Add the form for event deletion -->
-                <form id="deleteEventForm">
-                    <input type="hidden" id="deleteEventId" name="eventId">
-                    <button type="submit" class="btn btn-danger">Usuń wydarzenie</button>
-                </form>
-
-            </div>
-        </div>
-    </div>
+    <div id='calendar_id'></div>
 </div>
-
-</body>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-
-        var currentDate = @json($currentDate);
-        var currentEvent;
-
-        var editEventModal = document.getElementById('editEventModal'); // Pobieramy element modala do edycji wydarzenia
-        var editEventTitle = document.getElementById('editEventTitle'); // Pobieramy pole tytułu wydarzenia w modalu
-        var editEventStartTime = document.getElementById('editEventStartTime'); // Pobieramy pole czasu rozpoczęcia wydarzenia w modalu
-        var editEventEndTime = document.getElementById('editEventEndTime'); // Pobieramy pole czasu zakończenia wydarzenia w modalu
-
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            contentHeight: 600,
-
+    $(document).ready(function () {
+        var SITEURL = "{{ url('/') }}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var calendar = $('#calendar_id').fullCalendar({
+            locale: 'pl',
             editable: true,
+            buttonText: {
+                today: 'Dziś',
+                month: 'Miesiąc',
+                week: 'Tydzień',
+                day: 'Dzień',
+                list: 'Lista'
+            },
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            eventSources: [
-                {
-                    url: '/get-events', // Endpoint do pobierania wydarzeń z bazy danych
-                    method: 'GET',
-                    extraParams: {
-                        customParam: 'customValue'
+            // events: SITEURL + "/calender",
+            events: function(start, end, timezone, callback) {
+                var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
+                var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
+                $.ajax({
+                    type: 'GET',
+                    url: SITEURL + "/calender",
+                    data: {
+                        start: start,
+                        end: end,
                     },
-                    failure: function() {
+                    dataType: 'json',
+                    success: function(data) {
+                        var events = [];
+                        $(data).each(function() {
+                            events.push({
+                                id: $(this).attr('id'),
+                                title: $(this).attr('title'),
+                                start: $(this).attr('start_time'),
+                                end: $(this).attr('end_time'),
+                            });
+                        });
+                        callback(events);
+                    },
+                    error : function(data) {
+                        alert("Ajax call error");
+                        return false;
+                    },
+                });
+            },
 
-                        console.error('Błąd podczas pobierania wydarzeń z bazy danych');
-                    }
-                },
-                {
-                    url: '/delete-event', // Endpoint to delete events from the database
-                    method: 'POST',
-                    extraParams: {
-                        customParam: 'customValue'
-                    },
-                    eventParam: 'eventId', // Specify the name of the query parameter for event ID
-                    failure: function() {
-                        console.error('Error while deleting events from the database');
-                    },
-                },
-                {
-                    url: '/edit-event', // Endpoint to edit events in the database
-                    method: 'POST',
-                    extraParams: {
-                        customParam: 'customValue'
-                    },
-                    eventParam: 'eventId',
-                    // Specify the name of the query parameter for event ID
-                    failure: function() {
-                        console.error('Error while editing events in the database');
-                    },
+            displayEventTime: false,
+            editable: true,
+            eventRender: function (event, element, view) {
+                if (event.allDay === 'true') {
+                    event.allDay = true;
+                } else {
+                    event.allDay = false;
                 }
-            ],
-            eventDrop: function(info) {
-
             },
-            eventClick: function(info) {
-                currentEvent = info.event;
-
-                editEventTitle.value = currentEvent.title;
-                editEventStartTime.value = moment(currentEvent.start).format('HH:mm');
-                editEventEndTime.value = moment(currentEvent.end).format('HH:mm');
-                document.getElementById('deleteEventId').value = info.event.id;
-                document.getElementById('updateEventId').value = info.event.id;
-                // Wyświetlamy modal
-                editEventModal.style.display = 'block';
-
+            selectable: true,
+            selectHelper: true,
+            select: function (start, end, allDay) {
+                var title = prompt('Enter Event Title :');
+                if (title) {
+                    var start = moment(start).format("YYYY-MM-DD HH:mm:ss");
+                    var end = moment(end).format("YYYY-MM-DD HH:mm:ss");
+                    $.ajax({
+                        url: SITEURL + "/calenderAjax",
+                        data: {
+                            title: title,
+                            start: start,
+                            end: end,
+                            type: 'add'
+                        },
+                        type: "POST",
+                        success: function (data) {
+                            displayMessage("Event successfully created!");
+                            calendar.fullCalendar('renderEvent',{
+                                id: data.id,
+                                title: title,
+                                start: start,
+                                end: end,
+                                allDay: allDay
+                            },true);
+                            calendar.fullCalendar('unselect');
+                        }
+                    });
+                }
             },
-
-
-
-
-        });
-        var cancelButton = document.querySelector('#editEventModal .modal-footer .btn-secondary');
-
-        // Obsługa kliknięcia na przycisk "Anuluj"
-        cancelButton.addEventListener('click', function() {
-            // Ukryj modal
-            editEventModal.style.display = 'none';
-        });
-
-
-        // Obsługa kliknięcia przycisku "Zapisz zmiany"
-        document.getElementById('updateEventForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            // Pobieramy wartości z pól w modalu
-            var newTitle = editEventTitle.value;
-            var newStartTime = editEventStartTime.value;
-            var newEndTime = editEventEndTime.value;
-
-
-
-            currentEvent.setProp('title', newTitle);
-            currentEvent.setStart(moment(currentEvent.start).format('YYYY-MM-DD') + ' ' + newStartTime + ':00');
-            currentEvent.setEnd(moment(currentEvent.start).format('YYYY-MM-DD') + ' ' + newEndTime + ':00');
-
-
-
-            // Tutaj możesz umieścić kod do aktualizacji wydarzenia w bazie danych
-            const eventId = document.getElementById('updateEventId').value;
-            editEventInDatabase(eventId, newTitle, newStartTime, newEndTime);
-
-            editEventModal.style.display = 'none';
-        });
-
-        //obsluga usuwania z bazy danych
-        document.getElementById('deleteEventForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            // Get the eventId from the hidden input field
-            const eventId = document.getElementById('deleteEventId').value;
-            currentEvent.remove();
-
-            // Call the deleteEventFromDatabase function with the event's ID
-            deleteEventFromDatabase(eventId);
-
-            editEventModal.style.display = 'none';
+            eventDrop: function (event, data) {
+                var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
+                var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
+                $.ajax({
+                    url: SITEURL + '/calenderAjax',
+                    data: {
+                        title: event.title,
+                        start: start,
+                        end: end,
+                        id: event.id,
+                        type: 'update'
+                    },
+                    type: "POST",
+                    success: function (response) {
+                        displayMessage("Event successfully updated!");
+                    }
+                });
+            },
+            eventClick: function (event) {
+                var deleteMsg = confirm("Do you really want to delete this event?");
+                if (deleteMsg) {
+                    $.ajax({
+                        type: "POST",
+                        url: SITEURL + '/calenderAjax',
+                        data: {
+                            id: event.id,
+                            type: 'delete'
+                        },
+                        success: function (response) {
+                            calendar.fullCalendar('removeEvents', event.id);
+                            displayMessage("Event successfully deleted!");
+                        }
+                    });
+                }
+            }
         });
 
-
-
-
-        document.getElementById('addEventButton').addEventListener('click', function() {
-            document.getElementById('eventForm').style.display = 'block';
-        });
-
-        // Obsługa kliknięcia na przycisk "Zapisz" w formularzu
-        document.getElementById('saveEventButton').addEventListener('click', function() {
-            var eventTitle = document.getElementById('eventTitle').value;
-            var eventStartTime = document.getElementById('eventStartTime').value;
-            var eventEndTime = document.getElementById('eventEndTime').value;
-            var eventDate = document.getElementById('eventDate').value;
-            var newEvent = {
-                title: eventTitle,
-                start: eventDate + 'T' + eventStartTime,
-                end: eventDate + 'T' + eventEndTime, // Ustawiamy początkową datę jako aktualną datę
-                allDay: false // Czy wydarzenie trwa cały dzień
-            };
-
-            // Dodajemy nowe wydarzenie do kalendarza
-            calendar.addEvent(newEvent);
-
-            // Zapisujemy wydarzenie w bazie danych
-            saveEventToDatabase(newEvent);
-
-            // Czyścimy formularz i ukrywamy go
-            document.getElementById('eventTitle').value = '';
-            document.getElementById('eventStartTime').value = '';
-            document.getElementById('eventEndTime').value = '';
-            document.getElementById('eventDate').value = '';
-            document.getElementById('eventForm').style.display = 'none';
-
-        });
-
-        calendar.render();
     });
 
-    function saveEventToDatabase(eventData) {
-        axios.post('/save-event', eventData, {
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-            .then(function(response) {
-                console.log('Wydarzenie zapisane w bazie danych');
-            })
-            .catch(function(error) {
-                console.error('Błąd podczas zapisywania wydarzenia:', error);
-            });
+    function displayMessage(message) {
+        toastr.success(message, 'Event');
     }
-    function editEventInDatabase(eventId, newTitle, newStartTime, newEndTime) {
-        axios
-            .post(`/edit-event`, {
-                eventId: eventId,
-                title: newTitle,
-                start: newStartTime,
-                end: newEndTime
-            }, {
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(function(response) {
-                console.log('Event updated successfully');
-            })
-            .catch(function(error) {
-                console.error('Error while updating event:', error);
-            });
-    }
-
-
-    function deleteEventFromDatabase(eventId) {
-        axios.post(`/delete-event`, null, {
-            params: {
-                eventId: eventId
-            },
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-            .then(function(response) {
-                console.log(response);
-            })
-            .catch(function(error) {
-                console.error(error.response.data);
-            });
-    }
-
-
 </script>
-<center><button id="addEventButton" class="btn btn-primary">Dodaj wydarzenie</button></center>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
+</body>
 </html>
 @endsection

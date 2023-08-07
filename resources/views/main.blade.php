@@ -22,7 +22,7 @@
     ?>
     @auth <!-- Sprawdzenie, czy użytkownik jest zalogowany -->
 @role('Uczen')
-
+<div class="container">
     <div class="row row-cols-3 g-3">
         <div class="col">
             <div class="card mb-3" style="max-width: 540px;">
@@ -91,11 +91,14 @@
             </div>
         </div>
     </div>
+</div>
 @elserole('Admin|Wychowawca1a|Wychowawca1b|Wychowawca1c')
-    <div class="container">
+<div class="container">
        <center><h5 class="card-title text-justify" style="font-weight: bold; margin-top: 10px; margin-bottom: 20px;">Dzisiejsza data: {{$aktualnaData}}</h5></center>
-    </div>
+</div>
+<div class="container">
     <div class="row row-cols-3 g-3">
+        @can('manage-student')
         <div class="col">
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0" id="manageStudentCard" >
@@ -117,7 +120,7 @@
                 </div>
             </div>
         </div>
-
+        @endcan
         @can('enter-grades')
         <div class="col">
             <div class="card mb-3" style="max-width: 540px;">
@@ -141,6 +144,7 @@
             </div>
         </div>
         @endcan
+        @can('list-all-class')
         <div class="col">
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0" id="allClasses">
@@ -162,6 +166,8 @@
                 </div>
             </div>
         </div>
+        @endcan
+        @can('new-student-list')
         <div class="col">
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0" id="newStudents">
@@ -183,6 +189,7 @@
                 </div>
             </div>
         </div>
+        @endcan
         <div class="col">
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0" id="twojaKlasa">
@@ -225,6 +232,7 @@
         </div>
     </div>
 
+</div>
 @endrole
 @endauth
 <script>
@@ -253,14 +261,19 @@
                 window.location.href = `/student/${loggedInUserId}/profile`;
             });
         }
-        if (elementExists('calendar1')) {
-            const calendar1 = document.getElementById('calendar1');
+        if (elementExists('calendar')) {
+            const calendar1 = document.getElementById('calendar');
             calendar1.addEventListener('click', function() {
                 // Use the 'loggedInUserId' variable to construct the URL
                 window.location.href = `/calendar`;
             });
         }
-
+        if (elementExists('twojaKlasa')) {
+            const twojaKlasa = document.getElementById('twojaKlasa');
+            twojaKlasa.addEventListener('click', function () {
+                window.location.href = '/twojaKlasa';
+            });
+        }
 
         const manageStudentCard = document.getElementById('manageStudentCard');
         manageStudentCard.addEventListener('click', function() {
@@ -277,15 +290,7 @@
             window.location.href = '/newStudents';
         });
 
-        const calendar = document.getElementById('calendar');
-        calendar.addEventListener('click', function() {
-            window.location.href = '/calendar';
-        });
 
-        const twojaKlasa = document.getElementById('twojaKlasa');
-        twojaKlasa.addEventListener('click', function() {
-            window.location.href = '/twojaKlasa';
-        });
 
     </script>
 @endsection
