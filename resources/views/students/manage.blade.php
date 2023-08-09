@@ -8,33 +8,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Przypisanie studenta do użytkownika</title>
     <style>
-        /* Dodaj swoje style CSS tutaj, aby dostosować wygląd formularza */
+        .form-group{
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Przypisanie studenta do użytkownika</h2>
+    <h2>Załóż konto dla studenta</h2>
     <form action="{{ route('assignStudent') }}" method="post" id="assignForm">
-        @csrf <!-- Dodajemy pole CSRF token dla bezpieczeństwa -->
+        @csrf
         <div class="form-group">
             <label for="student_id" class="form-label">Wybierz studenta:</label>
             <select name="student_id" id="student_id" class="form-control">
-                <!-- Tutaj możesz wygenerować opcje z listy studentów z bazy danych -->
+
                 @foreach ($students as $student)
                     <option value="{{ $student->id }}">{{ $student->imie }} {{ $student->nazwisko }}</option>
                 @endforeach
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="user_id" class="form-label">Wybierz użytkownika:</label>
-            <select name="user_id" id="user_id" class="form-control">
-                <!-- Tutaj możesz wygenerować opcje z listy użytkowników z bazy danych -->
-                @foreach ($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }} {{ $user->email }}</option>
-                @endforeach
-            </select>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Imie:</strong>
+                    {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Email:</strong>
+                    {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Hasło:</strong>
+                    {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Potwierdź hasło:</strong>
+                    {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Rola:</strong>
+                    {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
+                </div>
+            </div>
         </div>
+
 
         <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Przypisz konto studentowi</button>
     </form>

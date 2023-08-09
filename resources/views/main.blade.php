@@ -26,7 +26,7 @@
     <div class="row row-cols-3 g-3">
         <div class="col">
             <div class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0" id="calendar1">
+                <div class="row g-0" id="calendar">
                     <div class="col-md-4" >
                         <img
                             src="calendar.png"
@@ -230,6 +230,27 @@
                 </div>
             </div>
         </div>
+            <div class="col">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0" id="subjectList" >
+                        <div class="col-md-4" >
+                            <img
+                                src="subjects.png"
+                                alt="Trendy Pants and Shoes"
+                                class="img-fluid rounded-start"
+                            />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Przedmioty</h5>
+                                <p class="card-text">
+                                    Lista przedmiotów
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 
 </div>
@@ -246,6 +267,14 @@
             WpiszOceny.addEventListener('click', function() {
                 // Use the 'loggedInUserId' variable to construct the URL
                 window.location.href = `/mark/student`;
+            });
+        }
+
+        if (elementExists('subjectList')) {
+            const subjectList = document.getElementById('subjectList');
+            subjectList.addEventListener('click', function() {
+                // Use the 'loggedInUserId' variable to construct the URL
+                window.location.href = `/subjectList`;
             });
         }
         if (elementExists('ocenyPanel')) {

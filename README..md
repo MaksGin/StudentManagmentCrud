@@ -15,5 +15,9 @@ i wybiera ucznia ktoremu przypisze ocene) (jest)
 14. Stworzenie tabeli posredniej gdzie polacze przedmiot z nauczycielem (jest)
 
 
+Do zrobienia: 
+- zmienic przypisywanie studenta do konta, moze podczas tworzenia konta wybrac studenta z selecta (jest)
+- przypisywanie nauczycielowi przedmiotu po stronie admina
+
 
 

@@ -89,6 +89,13 @@ class ClassController
         return view('classes.show', compact('class', 'students','className','allStudents'));
     }
 
+    public function deleteStudentFromClass($id): RedirectResponse
+    {
+        $studentToDelete = Student::find($id);
+        $studentToDelete->classes()->detach();
+
+        return redirect()->back()->with('success', 'Student usunięty z klasy.');
+    }
 
     public function addStudent(Request $request, Classes $class)
     {

@@ -70,10 +70,13 @@ Route::post('calenderAjax', [EventController::class, 'ajax']);
 Route::get('/student/{id}/profile',[StudentController::class,'showProfile'])->name('students.StudentView.profile');
 Route::get('/studentsManage',[StudentController::class,'studentManage'])->name('Students.manage');
 Route::post('/assignStudent',[StudentController::class,'assignStudent'])->name('assignStudent');
-
+Route::delete('/deleteStudentFromClass/{id}',[ClassController::class,'deleteStudentFromClass'])->name('deleteStudentFromClass');
 //widok wpisywania ocen wychowawcy
 Route::get('/mark/student',[TeacherController::class,'index'])->name('teachers.studentMark');
 Route::post('/mark/store', [TeacherController::class,'store'])->name('grade.store');
+
+
+Route::post('/assignSubject',[\App\Http\Controllers\SubjectController::class,'assignSubject'])->name('assignSubject');
 /*
  *
  *  KLASY
@@ -101,7 +104,7 @@ Route::get('/classes/{class}', [ClassController::class, 'show'])->name('classes.
 // routes/web.php
 Route::post('/classes/{class}/addStudent', [ClassController::class, 'addStudent'])->name('classes.addStudent');
 
-
+Route::get('/subjectList', [\App\Http\Controllers\SubjectController::class, 'subjectList'])->name('subjectList');
 /*
  *
  *  KALENDARZ

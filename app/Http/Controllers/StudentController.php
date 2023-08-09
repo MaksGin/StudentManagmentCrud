@@ -7,9 +7,10 @@ use App\Models\Grade;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
-
+use Spatie\Permission\Models\Role;
 class StudentController extends Controller
 {
 /*
@@ -134,7 +135,9 @@ class StudentController extends Controller
 
         $students = Student::all();
         $users = User::all();
-        return view('students.manage',compact('students','users'));
+
+        $roles = Role::where('name', 'Uczen')->pluck('name', 'name')->all();
+        return view('students.manage',compact('students','users','roles'));
     }
 
     public function assignStudent(Request $request): RedirectResponse
@@ -144,6 +147,22 @@ class StudentController extends Controller
 
         $student = Student::find($studentId);
         $user = User::find($userId);
+
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|same:confirm-password',
+            'roles' => 'required|array',
+        ]);
+
+
+
+        $input = $request->all();
+        $input['password'] = Hash::make($input['password']);
+        $user = User::create($input);
+
+        // Przypisanie ról do użytkownika
+        $user->assignRole($request->input('roles'));
 
         if($student && $user){
             $student->user()->attach($user);
