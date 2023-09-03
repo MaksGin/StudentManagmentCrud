@@ -50,23 +50,40 @@ Project is created with:
 
 Instructions: 
 1. Clone the repository on your local environment
+   
 ```
 $ git clone [<repository-url>](https://github.com/MaksGin/StudentManagmentCrud.git)
 $ cd folder-name
 ```
+
 2. Install dependencies (use composer to install php dependecies and npm to install js dependencies)
+   
 ```
 composer install
 npm install
 ```
-3. Run Migrations and Seed Data: Execute database migrations and seed sample data.
+
+3. Create an .env file and copy the entire contents of the env.example file to it
+
+Update the file with the appropriate settings, such as data for the database, API keys, etc. Link to the documentation: https://laravel.com/docs/10.x/configuration#introduction
+
+Generate app key:
+```
+php artisan key:generate
+```
+
+4. Run Migrations and Seed Data: Execute database migrations and seed sample data.
+   
 ```
 php artisan migrate
 php artisan db:seed
 ```
-4. Start the server
+
+5. Start the server
+   
 ```
 php artisan serve
 ```
-5. Open the browser and navigate to
+
+6. Open the browser and navigate to
    http://localhost:8000 to see application in action.
