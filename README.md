@@ -15,25 +15,39 @@ The application serves as a digital diary, offering a range of features tailored
     -  Assign teachers to specific classes, enabling effective class management.
     - Create custom roles and permissions using the spatie/laravel-permission package, ensuring fine-grained control over user access and actions.
 
-Administrator Panel
-![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/12976ad4-6b3d-4c2a-b965-72ae93257ce2)
+Login Panel
 
+![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/dd2b22c0-072b-4e5a-9022-881d063e5d0f)
+
+
+Administrator Panel
+
+![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/32359f9d-cfad-4ca3-8e9f-bccd4e003afd)
 
 * Teacher Functions: Teachers, logged in as class supervisors, have the ability to record and manage student grades, providing a seamless way to track academic progress.
 
 Teacher Panel
-![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/d70ca3dd-73b4-4866-b53a-b064008bf8e8)
+
+![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/f24bbbde-8247-49a4-92a6-3c0d43ec419c)
+
+
+Rating view:
+
+![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/871ce24e-65ab-49b3-a375-658ec75c5eff)
 
 
 * Student Interface: Students can access their individual profiles to view their grades in individual subjects and their information.
 
 Student Panel
-![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/c13418ac-00d1-4db4-adb7-fc8bc13a2b71)
+
+![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/25b98c0c-de42-468e-b4a2-8f8868470c74)
 
 * Class Calendar: Powered by the fullcalendar package, is available to all users. It enables them to schedule and view events, ensuring better organization.
+All events are saved to the database
 
 Calendar View
-![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/20d4838c-7ec2-4e9c-9967-e21b9d5e6cc9)
+
+![image](https://github.com/MaksGin/StudentManagmentCrud/assets/26302413/76b03619-f3c0-4d4b-93fa-8f22f843fe41)
 
 ## Technologies
 Project is created with:
